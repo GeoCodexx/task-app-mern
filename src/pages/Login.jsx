@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {Link as ReactRouterLink} from "react-router-dom"
 // Chakra imports
 import {
   Box,
@@ -15,19 +16,18 @@ import {
   InputGroup,
   InputRightElement,
 } from "@chakra-ui/react";
-//client/src/assets/img/signInImage.png
-//client/src/assets
+
 // Assets
 import signInImage from "../assets/img/signInImage.png";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 const Login = () => {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
-  const textColor = useColorModeValue("gray.400", "white");
+  const textColor = useColorModeValue("gray.500", "white");
 
   //Estado para mostrar y ocultar contraseña en el formulario
   const [showPassword, setShowPassword] = useState(false);
-  
+
   return (
     <Flex position="relative" mb="40px">
       <Flex
@@ -53,40 +53,42 @@ const Login = () => {
             mt={{ md: "150px", lg: "80px" }}
           >
             <Heading color={titleColor} fontSize="32px" mb="10px">
-              Bienvenido
+              Bienvenido de nuevo
             </Heading>
             <Text
               mb="36px"
               ms="4px"
               color={textColor}
-              fontWeight="bold"
-              fontSize="14px"
+              fontWeight="semibold"
+              fontSize="16px"
             >
               Ingrese su correo electrónico y contraseña para iniciar sesión
             </Text>
             <FormControl>
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Email
-              </FormLabel>
+              </FormLabel> */}
               <Input
+                focusBorderColor="teal.400"
                 borderRadius="15px"
                 mb="24px"
                 fontSize="sm"
                 type="text"
-                placeholder="Tu dirección de correo"
+                placeholder="Correo electrónico"
                 size="lg"
               />
             </FormControl>
             <FormControl>
-              <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Contraseña
-              </FormLabel>
+              </FormLabel> */}
               <InputGroup>
                 <Input
+                  focusBorderColor="teal.400"
                   borderRadius="15px"
                   fontSize="sm"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Tu contraseña"
+                  placeholder="Contraseña"
                   size="lg"
                 />
                 <InputRightElement h={"full"}>
@@ -113,7 +115,6 @@ const Login = () => {
               </FormLabel>
             </FormControl>
             <Button
-              fontSize="10px"
               type="submit"
               bg="teal.300"
               w="100%"
@@ -128,7 +129,7 @@ const Login = () => {
                 bg: "teal.400",
               }}
             >
-              SIGN IN
+              INICIAR SESIÓN
             </Button>
 
             <Flex
@@ -139,9 +140,9 @@ const Login = () => {
               mt="0px"
             >
               <Text color={textColor} fontWeight="medium">
-                No tienes una cuenta?
-                <Link color={titleColor} as="span" ms="5px" fontWeight="bold">
-                  Registrate
+                ¿No tienes una cuenta?
+                <Link to={"/register"} color={titleColor} as={ReactRouterLink} ms="5px" fontWeight="bold">
+                  Registrarme
                 </Link>
               </Text>
             </Flex>

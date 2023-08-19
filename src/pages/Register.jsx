@@ -20,6 +20,8 @@ import BgSignUp from "../assets/img/BgSignUp.png";
 import React, { useState } from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { Link as ReactRouterLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 const Register = () => {
   const titleColor = useColorModeValue("teal.300", "teal.200");
@@ -29,6 +31,13 @@ const Register = () => {
 
   //Estado para mostrar y ocultar contraseña en el formulario
   const [showPassword, setShowPassword] = useState(false);
+
+  //UseForm de react-hook-form para manejar datos del formulario
+  const {
+    handleSubmit,
+    register,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm();
 
   return (
     <Flex
@@ -58,8 +67,8 @@ const Register = () => {
         textAlign="center"
         justifyContent="center"
         align="center"
-        mt="6.5rem"
-        mb="30px"
+        mt="2.5rem"
+        mb="10px"
       >
         <Text fontSize="4xl" color="white" fontWeight="bold">
           Bienvenido!
@@ -69,13 +78,14 @@ const Register = () => {
           color="white"
           fontWeight="normal"
           mt="10px"
-          mb="26px"
+          mb="10px"
           w={{ base: "90%", sm: "60%", lg: "40%", xl: "30%" }}
         >
-          Por favor rellene los campos del formulario con su información respectiva.
+          Por favor rellene los campos del formulario con su información
+          respectiva.
         </Text>
       </Flex>
-      <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
+      <Flex alignItems="center" justifyContent="center" mb="60px" mt="5px">
         <Flex
           direction="column"
           w="445px"
@@ -159,7 +169,7 @@ const Register = () => {
           </HStack>
           <Text
             fontSize="lg"
-            color="gray.400"
+            color="gray.500"
             fontWeight="bold"
             textAlign="center"
             mb="22px"
@@ -167,81 +177,78 @@ const Register = () => {
             o
           </Text>
           <FormControl>
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+            {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Nombres
-            </FormLabel>
+            </FormLabel> */}
             <Input
-              name="names"
+              placeholder="Nombres"
               focusBorderColor="teal.400"
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="Your full name"
               mb="24px"
-              size="lg"
+              size="md"
             />
           </FormControl>
           <FormControl>
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Apellido Paterno
-            </FormLabel>
+            {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Apellido paterno
+            </FormLabel> */}
             <Input
-              name="names"
+              placeholder="Apellido paterno"
               focusBorderColor="teal.400"
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="Your full name"
               mb="24px"
-              size="lg"
+              size="md"
             />
           </FormControl>
           <FormControl>
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Apellido Materno
-            </FormLabel>
+            {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Apellido materno
+            </FormLabel> */}
             <Input
-              name="names"
+              placeholder="Apellido materno"
               focusBorderColor="teal.400"
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
               type="text"
-              placeholder="Your full name"
               mb="24px"
-              size="lg"
+              size="md"
             />
           </FormControl>
           <FormControl>
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Email
-            </FormLabel>
+            {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Correo electrónico
+            </FormLabel> */}
             <Input
-              name="email"
+              placeholder="Correo electrónico"
               focusBorderColor="teal.400"
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
               type="email"
-              placeholder="Your email address"
               mb="24px"
-              size="lg"
+              size="md"
             />
           </FormControl>
           <FormControl>
-            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Password
-            </FormLabel>
+            {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Contraseña
+            </FormLabel> */}
             <InputGroup>
               <Input
+                placeholder="Contraseña"
                 borderRadius="15px"
+                ms="4px"
                 focusBorderColor="teal.400"
                 fontSize="sm"
                 type={showPassword ? "text" : "password"}
-                placeholder="Tu contraseña"
-                size="lg"
+                size="md"
               />
               <InputRightElement h={"full"}>
                 <Button
@@ -258,13 +265,12 @@ const Register = () => {
           <FormControl display="flex" alignItems="center" my="24px">
             <Switch id="remember-login" colorScheme="teal" me="10px" />
             <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
-              Remember me
+              Recordarme
             </FormLabel>
           </FormControl>
           <Button
             type="submit"
             bg="teal.300"
-            fontSize="10px"
             color="white"
             fontWeight="bold"
             w="100%"
@@ -277,7 +283,7 @@ const Register = () => {
               bg: "teal.400",
             }}
           >
-            SIGN UP
+            REGISTRAR
           </Button>
           <Flex
             flexDirection="column"
@@ -287,15 +293,16 @@ const Register = () => {
             mt="0px"
           >
             <Text color={textColor} fontWeight="medium">
-              Already have an account?
+              ¿Ya tienes una cuenta?
               <Link
+                as={ReactRouterLink}
                 color={titleColor}
-                as="span"
                 ms="5px"
                 href="#"
                 fontWeight="bold"
+                to="/login"
               >
-                Sign In
+                Iniciar sesión
               </Link>
             </Text>
           </Flex>
