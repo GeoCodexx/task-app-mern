@@ -157,7 +157,7 @@ const Tasks = () => {
                 <Heading size="md" textAlign="center" mb={8}>
                   Registrar Tarea
                 </Heading>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
                   <FormControl isInvalid={errors.title}>
                     <FormLabel htmlFor="title">Título</FormLabel>
                     <Input
