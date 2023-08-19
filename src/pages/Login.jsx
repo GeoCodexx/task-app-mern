@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // Chakra imports
 import {
   Box,
@@ -12,15 +12,22 @@ import {
   Switch,
   Text,
   useColorModeValue,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
 //client/src/assets/img/signInImage.png
 //client/src/assets
 // Assets
 import signInImage from "../assets/img/signInImage.png";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 const Login = () => {
   // Chakra color mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.400", "white");
+
+  //Estado para mostrar y ocultar contraseña en el formulario
+  const [showPassword, setShowPassword] = useState(false);
+  
   return (
     <Flex position="relative" mb="40px">
       <Flex
@@ -69,47 +76,61 @@ const Login = () => {
                 placeholder="Tu dirección de correo"
                 size="lg"
               />
+            </FormControl>
+            <FormControl>
               <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
                 Contraseña
               </FormLabel>
-              <Input
-                borderRadius="15px"
-                mb="36px"
-                fontSize="sm"
-                type="password"
-                placeholder="Tu contraseña"
-                size="lg"
-              />
-              <FormControl display="flex" alignItems="center">
-                <Switch id="remember-login" colorScheme="teal" me="10px" />
-                <FormLabel
-                  htmlFor="remember-login"
-                  mb="0"
-                  ms="1"
-                  fontWeight="normal"
-                >
-                  Recordarme
-                </FormLabel>
-              </FormControl>
-              <Button
-                fontSize="10px"
-                type="submit"
-                bg="teal.300"
-                w="100%"
-                h="45"
-                mb="20px"
-                color="white"
-                mt="20px"
-                _hover={{
-                  bg: "teal.200",
-                }}
-                _active={{
-                  bg: "teal.400",
-                }}
-              >
-                SIGN IN
-              </Button>
+              <InputGroup>
+                <Input
+                  borderRadius="15px"
+                  fontSize="sm"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Tu contraseña"
+                  size="lg"
+                />
+                <InputRightElement h={"full"}>
+                  <Button
+                    variant={"ghost"}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
             </FormControl>
+            <FormControl display="flex" alignItems="center" mt="25px">
+              <Switch id="remember-login" colorScheme="teal" me="10px" />
+              <FormLabel
+                htmlFor="remember-login"
+                mb="0"
+                ms="1"
+                fontWeight="normal"
+              >
+                Recordarme
+              </FormLabel>
+            </FormControl>
+            <Button
+              fontSize="10px"
+              type="submit"
+              bg="teal.300"
+              w="100%"
+              h="45"
+              mb="20px"
+              color="white"
+              mt="20px"
+              _hover={{
+                bg: "teal.200",
+              }}
+              _active={{
+                bg: "teal.400",
+              }}
+            >
+              SIGN IN
+            </Button>
+
             <Flex
               flexDirection="column"
               justifyContent="center"

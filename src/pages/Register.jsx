@@ -8,6 +8,8 @@ import {
   HStack,
   Icon,
   Input,
+  InputGroup,
+  InputRightElement,
   Link,
   Switch,
   Text,
@@ -15,14 +17,19 @@ import {
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
-import React from "react";
+import React, { useState } from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const Register = () => {
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
   const bgIcons = useColorModeValue("teal.200", "rgba(255, 255, 255, 0.5)");
+
+  //Estado para mostrar y ocultar contraseña en el formulario
+  const [showPassword, setShowPassword] = useState(false);
+
   return (
     <Flex
       direction="column"
@@ -55,7 +62,7 @@ const Register = () => {
         mb="30px"
       >
         <Text fontSize="4xl" color="white" fontWeight="bold">
-          Welcome!
+          Bienvenido!
         </Text>
         <Text
           fontSize="md"
@@ -65,8 +72,7 @@ const Register = () => {
           mb="26px"
           w={{ base: "90%", sm: "60%", lg: "40%", xl: "30%" }}
         >
-          Use these awesome forms to login or create new account in your project
-          for free.
+          Por favor rellene los campos del formulario con su información respectiva.
         </Text>
       </Flex>
       <Flex alignItems="center" justifyContent="center" mb="60px" mt="20px">
@@ -87,7 +93,7 @@ const Register = () => {
             textAlign="center"
             mb="22px"
           >
-            Register With
+            Registrarse con...
           </Text>
           <HStack spacing="15px" justify="center" mb="22px">
             <Flex
@@ -158,14 +164,14 @@ const Register = () => {
             textAlign="center"
             mb="22px"
           >
-            or
+            o
           </Text>
           <FormControl>
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
-              Name
+              Nombres
             </FormLabel>
             <Input
-                name="names"
+              name="names"
               focusBorderColor="teal.400"
               fontSize="sm"
               ms="4px"
@@ -175,11 +181,46 @@ const Register = () => {
               mb="24px"
               size="lg"
             />
+          </FormControl>
+          <FormControl>
+            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Apellido Paterno
+            </FormLabel>
+            <Input
+              name="names"
+              focusBorderColor="teal.400"
+              fontSize="sm"
+              ms="4px"
+              borderRadius="15px"
+              type="text"
+              placeholder="Your full name"
+              mb="24px"
+              size="lg"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
+              Apellido Materno
+            </FormLabel>
+            <Input
+              name="names"
+              focusBorderColor="teal.400"
+              fontSize="sm"
+              ms="4px"
+              borderRadius="15px"
+              type="text"
+              placeholder="Your full name"
+              mb="24px"
+              size="lg"
+            />
+          </FormControl>
+          <FormControl>
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Email
             </FormLabel>
             <Input
-            name="email"
+              name="email"
+              focusBorderColor="teal.400"
               fontSize="sm"
               ms="4px"
               borderRadius="15px"
@@ -188,44 +229,56 @@ const Register = () => {
               mb="24px"
               size="lg"
             />
+          </FormControl>
+          <FormControl>
             <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Password
             </FormLabel>
-            <Input
-            name="password"
-              fontSize="sm"
-              ms="4px"
-              borderRadius="15px"
-              type="password"
-              placeholder="Your password"
-              mb="24px"
-              size="lg"
-            />
-            <FormControl display="flex" alignItems="center" mb="24px">
-              <Switch id="remember-login" colorScheme="teal" me="10px" />
-              <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
-                Remember me
-              </FormLabel>
-            </FormControl>
-            <Button
-              type="submit"
-              bg="teal.300"
-              fontSize="10px"
-              color="white"
-              fontWeight="bold"
-              w="100%"
-              h="45"
-              mb="24px"
-              _hover={{
-                bg: "teal.200",
-              }}
-              _active={{
-                bg: "teal.400",
-              }}
-            >
-              SIGN UP
-            </Button>
+            <InputGroup>
+              <Input
+                borderRadius="15px"
+                focusBorderColor="teal.400"
+                fontSize="sm"
+                type={showPassword ? "text" : "password"}
+                placeholder="Tu contraseña"
+                size="lg"
+              />
+              <InputRightElement h={"full"}>
+                <Button
+                  variant={"ghost"}
+                  onClick={() =>
+                    setShowPassword((showPassword) => !showPassword)
+                  }
+                >
+                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
           </FormControl>
+          <FormControl display="flex" alignItems="center" my="24px">
+            <Switch id="remember-login" colorScheme="teal" me="10px" />
+            <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
+              Remember me
+            </FormLabel>
+          </FormControl>
+          <Button
+            type="submit"
+            bg="teal.300"
+            fontSize="10px"
+            color="white"
+            fontWeight="bold"
+            w="100%"
+            h="45"
+            mb="24px"
+            _hover={{
+              bg: "teal.200",
+            }}
+            _active={{
+              bg: "teal.400",
+            }}
+          >
+            SIGN UP
+          </Button>
           <Flex
             flexDirection="column"
             justifyContent="center"

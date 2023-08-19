@@ -45,7 +45,7 @@ const Tasks = () => {
         <NavBarTask />
       </nav>
       <Box px={{ base: "6px", md: "40px" }} py="5">
-        <Container maxW="container.2xl">
+        <Container maxW="container.xl">
           <Heading textAlign="center" mb="5">
             Tareas
           </Heading>
@@ -63,7 +63,7 @@ const Tasks = () => {
                 w="100%"
                 templateColumns={{
                   base: "repeat(1, 1fr)",
-                  "2xl": "repeat(2, 1fr)",
+                  "2xl": "repeat(3, 1fr)",
                 }}
                 gap={4}
                 bg={useColorModeValue("white", "gray.800")}
@@ -72,55 +72,59 @@ const Tasks = () => {
                   {
                     title: "Tarea 01",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 02",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 03",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 04",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 05",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 06",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 07",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 08",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 09",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                   {
                     title: "Tarea 10",
                     description:
-                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Fugit consectetur delectus porro nesciunt aliquid omnis dolores cum itaque suscipit perspiciatis.",
+                      "Lorem ipsum dolor, sit amet consectetur adipisicing elit.",
                   },
                 ].map((elem, i) => (
-                  <Card key={i} variant="filled">
+                  <Card
+                    key={i}
+                    variant="filled"
+                    bg={useColorModeValue("#eff1f1", "gray.700")}
+                  >
                     <CardHeader>
                       <Heading size="md"> {elem.title}</Heading>
                     </CardHeader>
@@ -138,12 +142,21 @@ const Tasks = () => {
             <GridItem
               w="100%"
               h="auto"
-              bg={useColorModeValue("gray.100", "gray.800")}
-              rowStart={{base:"1", lg:"auto"}}
+              bg={useColorModeValue("white", "gray.800")}
+              rowStart={{ base: "1", lg: "auto" }}
             >
-              <Box w={{ base: "280px", md: "400px" }}>
+              <Box
+                w={{ base: "280px", sm: "400px" }}
+                m="auto"
+                p={6}
+                bg={useColorModeValue("white", "gray.700")}
+                borderRadius={"lg"}
+                boxShadow={"lg"}
+              >
                 {/**FORM COMPONENT */}
-                <Heading size="md" textAlign="center">Registrar Tarea</Heading>
+                <Heading size="md" textAlign="center" mb={8}>
+                  Registrar Tarea
+                </Heading>
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <FormControl isInvalid={errors.title}>
                     <FormLabel htmlFor="title">Título</FormLabel>
@@ -162,7 +175,7 @@ const Tasks = () => {
                       {errors.title && errors.title.message}
                     </FormErrorMessage>
                   </FormControl>
-                  <FormControl isInvalid={errors.description}>
+                  <FormControl isInvalid={errors.description} my={4}>
                     <FormLabel htmlFor="description">Descripción</FormLabel>
                     <Textarea
                       id="description"
@@ -184,6 +197,7 @@ const Tasks = () => {
                     colorScheme="teal"
                     isLoading={isSubmitting}
                     type="submit"
+                    w={{ base: "full" }}
                   >
                     Guardar
                   </Button>
