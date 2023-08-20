@@ -23,6 +23,7 @@ import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Link as ReactRouterLink } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { registerRequest } from "../api/auth";
 
 const Register = () => {
   const titleColor = useColorModeValue("teal.300", "teal.200");
@@ -44,7 +45,9 @@ const Register = () => {
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        alert(JSON.stringify(values, null, 2));
+        //alert(JSON.stringify(values, null, 2));
+        registerRequest(values);
+        console.log("Usuario registrado");
         resolve();
       }, 3000);
     });
@@ -105,7 +108,7 @@ const Register = () => {
           p="40px"
           mx={{ base: "100px" }}
           bg={bgColor}
-          boxShadow="0 20px 27px 0 rgb(0 0 0 / 5%)"
+          boxShadow={{base:"none", sm:"0 20px 27px 0 rgb(0 0 0 / 15%)"}}
         >
           <Text
             fontSize="xl"
@@ -333,17 +336,17 @@ const Register = () => {
             </FormControl>
             <Button
               type="submit"
-              bg="teal.300"
+              bg="teal.400"
               color="white"
               fontWeight="bold"
               w="100%"
               h="45"
               mb="24px"
               _hover={{
-                bg: "teal.200",
+                bg: "teal.500",
               }}
               _active={{
-                bg: "teal.400",
+                bg: "teal.600",
               }}
               isLoading={isSubmitting}
             >

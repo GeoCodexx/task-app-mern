@@ -41,32 +41,34 @@ const Tasks = () => {
 
   return (
     <>
-      <nav>
+      <nav style={{marginBottom :"64px"}}>
         <NavBarTask />
       </nav>
-      <Box px={{ base: "6px", md: "40px" }} py="5">
-        <Container maxW="container.xl">
-          <Heading textAlign="center" mb="5">
+      <Box px={{ base: "6px", md: "40px" }} py="5" bg={useColorModeValue("gray.50", "gray.800")} minWidth={"340px"}>
+      <Heading textAlign="center" mb="5">
             Tareas
           </Heading>
+        <Container maxW="container.xl">
+          
           <Grid
-            templateColumns={{ base: "repeat(1, 1fr)", lg: "repeat(2, 1fr)" }}
+            templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
             gap={6}
           >
             {/**SECTION LEFT */}
             <GridItem
               w="100%"
               h="auto"
-              bg={useColorModeValue("gray.100", "gray.900")}
+              bg={useColorModeValue("gray.50", "gray.800")}
             >
               <Grid
                 w="100%"
                 templateColumns={{
                   base: "repeat(1, 1fr)",
-                  "2xl": "repeat(3, 1fr)",
+                  xl: "repeat(2, 1fr)",
+                  "2xl": "repeat(2, 1fr)",
                 }}
                 gap={4}
-                bg={useColorModeValue("white", "gray.800")}
+                bg={useColorModeValue("gray.50", "gray.800")}
               >
                 {[
                   {
@@ -142,12 +144,12 @@ const Tasks = () => {
             <GridItem
               w="100%"
               h="auto"
-              bg={useColorModeValue("white", "gray.800")}
-              rowStart={{ base: "1", lg: "auto" }}
+              bg={useColorModeValue("gray.50", "gray.800")}
+              rowStart={{ base: "1", md: "auto" }}
             >
               <Box
-                w={{ base: "280px", sm: "400px" }}
-                m="auto"
+                w={{ base: "full", sm: "400px" }}
+                m={{base: "0px" ,sm:"auto"}}
                 p={6}
                 bg={useColorModeValue("white", "gray.700")}
                 borderRadius={"lg"}

@@ -9,11 +9,12 @@ import ManagementUser from "../pages/ManagementUser";
 import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Tasks";
 import NotFound from "../pages/NotFound";
+import Home from "../pages/Home";
 
 const RoutesMain = () => {
   return (
     <Routes>
-      <Route path="/" element={<Tasks />} />
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/admin" element={<Admin />}>
@@ -21,8 +22,8 @@ const RoutesMain = () => {
         <Route path="/admin/tasks" element={<ManagementTask />} />
         <Route path="/admin/users" element={<ManagementUser />} />
       </Route>
+      <Route path="/tasks" element={<Tasks />} />
       <Route path="*" element={<NotFound />}></Route>
-
     </Routes>
   );
 };
