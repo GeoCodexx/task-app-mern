@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthProvider";
 // Chakra imports
 import {
   Box,
@@ -26,11 +28,14 @@ import { useForm } from "react-hook-form";
 // Assets
 import signInImage from "../assets/img/signInImage.png";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { AuthContext } from "../contexts/AuthProvider";
+
 const Login = () => {
   //Asignar y obtener datos del usuario logeado con el hook de contexto
-  const { signin, isAuthenticated, showError } = useContext(AuthContext);
-  //console.log(isAuthenticated);
+  const {
+    signin,
+    isAuthenticated,
+    errors: loginErrors,
+  } = useContext(AuthContext);
   //hook para navegar por rutas
   const navigate = useNavigate();
 
@@ -59,11 +64,8 @@ const Login = () => {
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        //alert(JSON.stringify(values, null, 2));
-
         //funcion para autenticar al usuario
         signin(values);
-
         resolve();
       }, 2000);
     });
@@ -109,12 +111,15 @@ const Login = () => {
             >
               Ingrese su correo electrónico y contraseña para iniciar sesión
             </Text>
-            {showError && (
-              <Alert status="error" mb={2}>
-                <AlertIcon />
-                ¡Email y/o contraseña son incorrectos!
-              </Alert>
-            )}
+
+            {/**Alerta de errores para el registro de usuario */}
+            {loginErrors.length > 0 &&
+              loginErrors.map((err, i) => (
+                <Alert status="error" mb={2} key={i}>
+                  <AlertIcon />
+                  {err}
+                </Alert>
+              ))}
             {/**FORM login*/}
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <FormControl isInvalid={errors.email} mb="24px">

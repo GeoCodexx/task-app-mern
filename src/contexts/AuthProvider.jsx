@@ -18,8 +18,11 @@ const AuthProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
       setIsRegistered(false);
-      console.log("Asignando a falso");
-      const formatedError = error.response.data.hasOwnProperty("error") ? error.response.data.error : error.response.data
+
+      const formatedError = error.response.data.hasOwnProperty("error")
+        ? error.response.data.error
+        : error.response.data;
+
       setErrors(formatedError);
     }
   };
@@ -33,11 +36,15 @@ const AuthProvider = ({ children }) => {
       //Guardar para manejar la sesion del usuario
       setUser(res.data);
       //Cambiar el estado cuando se logeee
-      setErrors([]);
+      //setErrors([]);
       setIsAuthenticated(true);
     } catch (error) {
       console.log(error);
-      setErrors(error.response.data);
+
+      const formatedError = error.response.data.hasOwnProperty("error")
+        ? error.response.data.error
+        : error.response.data;
+      setErrors(formatedError);
     }
   };
 
