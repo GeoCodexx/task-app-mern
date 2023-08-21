@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 //import Charts from "../pages/Charts";
@@ -10,19 +10,38 @@ import Dashboard from "../pages/Dashboard";
 import Tasks from "../pages/Tasks";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const RoutesMain = () => {
+  const { isAuthenticated, user } = useContext(AuthContext);
+
+  /*const [redirectFlag, setRedirectFlag] = useState(false);
+
+  useEffect(() => {
+    setRedirectFlag(isAuthenticated);
+  }, [isAuthenticated]);
+*/
+  const roleUser = user?.roles.map(
+    (e) => e.name.includes("Administrator") || e.name.includes("Assistant")
+  );
+
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
+      <Route
+        path="/login"
+        element={isAuthenticated ? <Navigate to="/tasks" /> : <Login />}
+      />
       <Route path="/register" element={<Register />} />
-      <Route path="/admin" element={<Admin />}>
-        <Route path="/admin" element={<Dashboard />} />
+      <Route path="/admin" element={roleUser ? <Admin /> : <Navigate to="/tasks"/>}>
+        <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/tasks" element={<ManagementTask />} />
         <Route path="/admin/users" element={<ManagementUser />} />
       </Route>
-      <Route path="/tasks" element={<Tasks />} />
+      <Route
+        path="/tasks"
+        element={isAuthenticated ? <Tasks /> : <Navigate to="/login" replace />}
+      />
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
   );

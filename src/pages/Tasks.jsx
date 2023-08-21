@@ -1,4 +1,3 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 import NavBarTask from "../components/NavBarTask";
 import {
@@ -29,6 +28,10 @@ const Tasks = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  //Obteniendo datos del AuthContext
+  //const { isAuthenticated, user } = useContext(AuthContext);
+  //console.log(isAuthenticated);
+
   //Manejar los datos del formulario
   const onSubmit = (values) => {
     return new Promise((resolve) => {
@@ -41,15 +44,19 @@ const Tasks = () => {
 
   return (
     <>
-      <nav style={{marginBottom :"64px"}}>
+      <nav style={{ marginBottom: "64px" }}>
         <NavBarTask />
       </nav>
-      <Box px={{ base: "6px", md: "40px" }} py="5" bg={useColorModeValue("gray.50", "gray.800")} minWidth={"340px"}>
-      <Heading textAlign="center" mb="5">
-            Tareas
-          </Heading>
+      <Box
+        px={{ base: "6px", md: "40px" }}
+        py="5"
+        bg={useColorModeValue("gray.50", "gray.800")}
+        minWidth={"340px"}
+      >
+        <Heading textAlign="center" mb="5">
+          Tareas
+        </Heading>
         <Container maxW="container.xl">
-          
           <Grid
             templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
             gap={6}
@@ -149,7 +156,7 @@ const Tasks = () => {
             >
               <Box
                 w={{ base: "full", sm: "400px" }}
-                m={{base: "0px" ,sm:"auto"}}
+                m={{ base: "0px", sm: "auto" }}
                 p={6}
                 bg={useColorModeValue("white", "gray.700")}
                 borderRadius={"lg"}

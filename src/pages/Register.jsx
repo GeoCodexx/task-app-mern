@@ -1,5 +1,7 @@
 // Chakra imports
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Flex,
@@ -15,17 +17,24 @@ import {
   Switch,
   Text,
   useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
 // Assets
 import BgSignUp from "../assets/img/BgSignUp.png";
-import React, { useState } from "react";
 import { FaApple, FaFacebook, FaGoogle } from "react-icons/fa";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { Link as ReactRouterLink } from "react-router-dom";
+
+//React libraries
+import React, { useContext, useEffect, useState } from "react";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { registerRequest } from "../api/auth";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const Register = () => {
+  //navigate element React Router
+  const navig = useNavigate();
+
+  //config color light/dark mode
   const titleColor = useColorModeValue("teal.300", "teal.200");
   const textColor = useColorModeValue("gray.700", "white");
   const bgColor = useColorModeValue("white", "gray.700");
@@ -41,15 +50,47 @@ const Register = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  //Accediendo a datos del contexto para validar el registro
+  const {
+    errors: registerErrors,
+    signup,
+    isRegistered,
+    setIsRegistered,
+  } = useContext(AuthContext);
+
+  //Para usar los mensajes Toast de confirmacion
+  const toast = useToast();
+
+  //Hook para comprobar si el usuario se autentico correctamente para ser redirigido
+  useEffect(() => {
+    //Mostrar alerta y redireccionar si en caso se registre correctamente
+    if (isRegistered) {
+      //Mostrar mensaje de confirmacion
+      toast({
+        title: "Cuenta creada",
+        description: "Se ha registrado correctamente.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        colorScheme: "teal",
+      });
+      setTimeout(() => {
+        //navegar a la ruta login para que el usuario se autentifique
+        navig("/login");
+        setIsRegistered(false);
+      }, 3000);
+    }
+    //console.log(isRegistered);
+  }, [isRegistered]);
+
   //Manejar los datos del formulario
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        //alert(JSON.stringify(values, null, 2));
-        registerRequest(values);
-        console.log("Usuario registrado");
+        //Llamar a la funcion del contexto para procesar los datos.
+        signup(values);
         resolve();
-      }, 3000);
+      }, 2000);
     });
   };
 
@@ -108,88 +149,100 @@ const Register = () => {
           p="40px"
           mx={{ base: "100px" }}
           bg={bgColor}
-          boxShadow={{base:"none", sm:"0 20px 27px 0 rgb(0 0 0 / 15%)"}}
+          boxShadow={{ base: "none", sm: "0 20px 27px 0 rgb(0 0 0 / 15%)" }}
         >
-          <Text
-            fontSize="xl"
-            color={textColor}
-            fontWeight="bold"
-            textAlign="center"
-            mb="22px"
-          >
-            Registrarse con...
-          </Text>
-          <HStack spacing="15px" justify="center" mb="22px">
-            <Flex
-              justify="center"
-              align="center"
-              w="75px"
-              h="75px"
-              borderRadius="15px"
-              border="1px solid lightgray"
-              cursor="pointer"
-              transition="all .25s ease"
-              _hover={{ filter: "brightness(120%)", bg: bgIcons }}
-            >
-              <Link href="#">
-                <Icon
-                  as={FaFacebook}
-                  w="30px"
-                  h="30px"
-                  _hover={{ filter: "brightness(120%)" }}
-                />
-              </Link>
-            </Flex>
-            <Flex
-              justify="center"
-              align="center"
-              w="75px"
-              h="75px"
-              borderRadius="15px"
-              border="1px solid lightgray"
-              cursor="pointer"
-              transition="all .25s ease"
-              _hover={{ filter: "brightness(120%)", bg: bgIcons }}
-            >
-              <Link href="#">
-                <Icon
-                  as={FaApple}
-                  w="30px"
-                  h="30px"
-                  _hover={{ filter: "brightness(120%)" }}
-                />
-              </Link>
-            </Flex>
-            <Flex
-              justify="center"
-              align="center"
-              w="75px"
-              h="75px"
-              borderRadius="15px"
-              border="1px solid lightgray"
-              cursor="pointer"
-              transition="all .25s ease"
-              _hover={{ filter: "brightness(120%)", bg: bgIcons }}
-            >
-              <Link href="#">
-                <Icon
-                  as={FaGoogle}
-                  w="30px"
-                  h="30px"
-                  _hover={{ filter: "brightness(120%)" }}
-                />
-              </Link>
-            </Flex>
-          </HStack>
-          <Text
-            fontSize="lg"
-            color="gray.500"
-            fontWeight="bold"
-            textAlign="center"
-            mb="22px"
-          >
-            o
-          </Text>
+          {/**Alerta de errores para el registro de usuario */}
+          {registerErrors.length > 0 ? (
+            registerErrors.map((err, i) => (
+              <Alert status="error" mb={2} borderRadius="xl" key={i}>
+                <AlertIcon />
+                {err}
+              </Alert>
+            ))
+          ) : (
+            <>
+              <Text
+                fontSize="xl"
+                color={textColor}
+                fontWeight="bold"
+                textAlign="center"
+                mb="22px"
+              >
+                Registrarse con...
+              </Text>
+              <HStack spacing="15px" justify="center" mb="22px">
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="75px"
+                  h="75px"
+                  borderRadius="15px"
+                  border="1px solid lightgray"
+                  cursor="pointer"
+                  transition="all .25s ease"
+                  _hover={{ filter: "brightness(120%)", bg: bgIcons }}
+                >
+                  <Link href="#">
+                    <Icon
+                      as={FaFacebook}
+                      w="30px"
+                      h="30px"
+                      _hover={{ filter: "brightness(120%)" }}
+                    />
+                  </Link>
+                </Flex>
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="75px"
+                  h="75px"
+                  borderRadius="15px"
+                  border="1px solid lightgray"
+                  cursor="pointer"
+                  transition="all .25s ease"
+                  _hover={{ filter: "brightness(120%)", bg: bgIcons }}
+                >
+                  <Link href="#">
+                    <Icon
+                      as={FaApple}
+                      w="30px"
+                      h="30px"
+                      _hover={{ filter: "brightness(120%)" }}
+                    />
+                  </Link>
+                </Flex>
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="75px"
+                  h="75px"
+                  borderRadius="15px"
+                  border="1px solid lightgray"
+                  cursor="pointer"
+                  transition="all .25s ease"
+                  _hover={{ filter: "brightness(120%)", bg: bgIcons }}
+                >
+                  <Link href="#">
+                    <Icon
+                      as={FaGoogle}
+                      w="30px"
+                      h="30px"
+                      _hover={{ filter: "brightness(120%)" }}
+                    />
+                  </Link>
+                </Flex>
+              </HStack>
+              <Text
+                fontSize="lg"
+                color="gray.500"
+                fontWeight="bold"
+                textAlign="center"
+                mb="22px"
+              >
+                o
+              </Text>
+            </>
+          )}
 
           <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
             <FormControl isInvalid={errors.names} mb="24px">
@@ -282,8 +335,8 @@ const Register = () => {
                 {...register("email", {
                   required: "*Complete este campo!",
                   pattern: {
-                    value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                    message: "*Dirreción de correo invalido!",
+                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                    message: "*Correo electrónico inválido!",
                   },
                 })}
               />
@@ -292,7 +345,7 @@ const Register = () => {
               </FormErrorMessage>
             </FormControl>
 
-            <FormControl isInvalid={errors.password}>
+            <FormControl isInvalid={errors.password} mb="24px">
               {/* <FormLabel ms="4px" fontSize="sm" fontWeight="normal">
               Contraseña
             </FormLabel> */}
@@ -316,6 +369,7 @@ const Register = () => {
                 <InputRightElement h={"full"}>
                   <Button
                     variant={"ghost"}
+                    _hover={{backgroundColor: "none"}}
                     onClick={() =>
                       setShowPassword((showPassword) => !showPassword)
                     }
@@ -328,12 +382,12 @@ const Register = () => {
                 {errors.password && errors.password.message}
               </FormErrorMessage>
             </FormControl>
-            <FormControl display="flex" alignItems="center" my="24px">
+            {/* <FormControl display="flex" alignItems="center" my="24px">
               <Switch id="remember-login" colorScheme="teal" me="10px" />
               <FormLabel htmlFor="remember-login" mb="0" fontWeight="normal">
                 Recordarme
               </FormLabel>
-            </FormControl>
+            </FormControl> */}
             <Button
               type="submit"
               bg="teal.400"
@@ -361,7 +415,7 @@ const Register = () => {
             mt="0px"
           >
             <Text color={textColor} fontWeight="medium">
-              ¿Ya tienes una cuenta?
+              ¿Ya tienes una cuenta? 
               <Link
                 as={ReactRouterLink}
                 color={titleColor}

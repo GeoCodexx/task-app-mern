@@ -18,15 +18,24 @@ import {
   Text,
   Link,
 } from "@chakra-ui/react";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { BsPencilSquare } from "react-icons/bs";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
+import { logoutRequest } from "../api/auth";
 
 const NavBarTask = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user, setIsAuthenticated } = useContext(AuthContext);
+  const naveg = useNavigate();
+
+  const handleAccessAdminPanel = () => { 
+    naveg("/admin")
+   }
+
+
+
   return (
     <>
       <Box
@@ -75,6 +84,14 @@ const NavBarTask = () => {
                 </>
               ) : (
                 <>
+                  {/**Button theme dark/light */}
+                  <Button
+                    onClick={toggleColorMode}
+                    variant="ghost"
+                    display={{ base: "none", md: "block" }}
+                  >
+                    {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+                  </Button>
                   {/**Button user Avatar Info */}
                   <Menu>
                     <MenuButton
@@ -87,7 +104,9 @@ const NavBarTask = () => {
                       <Avatar
                         size={"sm"}
                         src={
-                          "https://avatars.dicebear.com/api/male/username.svg"
+                          user.image
+                            ? user.image
+                            : "https://avatars.dicebear.com/api/male/username.svg"
                         }
                       />
                     </MenuButton>
@@ -97,19 +116,28 @@ const NavBarTask = () => {
                         <Avatar
                           size={"lg"}
                           src={
-                            "https://avatars.dicebear.com/api/male/username.svg"
+                            user.image
+                              ? user.image
+                              : "https://avatars.dicebear.com/api/male/username.svg"
                           }
                         />
                       </Center>
                       <br />
                       <Center>
-                        <p>Username</p>
+                        <p>{isAuthenticated ? user.names : "Username"}</p>
                       </Center>
                       <br />
                       <MenuDivider />
-                      <MenuItem>Your Servers</MenuItem>
-                      <MenuItem>Account Settings</MenuItem>
-                      <MenuItem>Logout</MenuItem>
+                      <MenuItem>Perfil</MenuItem>
+                      <MenuItem onClick={handleAccessAdminPanel}>Panel Administrativo</MenuItem>
+                      <MenuItem
+                        onClick={() => {
+                          logoutRequest;
+                          setIsAuthenticated(false);
+                        }}
+                      >
+                        Cerrar sesión
+                      </MenuItem>
                     </MenuList>
                   </Menu>
                 </>

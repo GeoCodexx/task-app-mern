@@ -11,3 +11,8 @@ export const loginRequest = async (credentials) => {
   const response = await axios.post(`${API}/auth/login`, credentials);
   return response;
 };
+
+export const logoutRequest = async () => {
+  const response = await axios.get(`${API}/auth/logout`);
+  return response;
+};

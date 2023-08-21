@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 // Chakra imports
 import {
@@ -16,6 +16,8 @@ import {
   InputGroup,
   InputRightElement,
   FormErrorMessage,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 
 //react-hook-form
@@ -24,12 +26,11 @@ import { useForm } from "react-hook-form";
 // Assets
 import signInImage from "../assets/img/signInImage.png";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { loginRequest } from "../api/auth";
 import { AuthContext } from "../contexts/AuthProvider";
 const Login = () => {
   //Asignar y obtener datos del usuario logeado con el hook de contexto
-  const { signup } = useContext(AuthContext);
-
+  const { signin, isAuthenticated, showError } = useContext(AuthContext);
+  //console.log(isAuthenticated);
   //hook para navegar por rutas
   const navigate = useNavigate();
 
@@ -48,6 +49,12 @@ const Login = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  //Hook para comprobar si el usuario se autentico correctamente para ser redirigido
+  useEffect(() => {
+    //Redireccion a la pagina de tareas
+    if (isAuthenticated) navigate("/tasks", { replace: true });
+  }, [isAuthenticated]);
+
   //Manejar los datos del formulario
   const onSubmit = (values) => {
     return new Promise((resolve) => {
@@ -55,13 +62,10 @@ const Login = () => {
         //alert(JSON.stringify(values, null, 2));
 
         //funcion para autenticar al usuario
-        signup(values);
-
-        //Redireccion a la pagina de tareas
-        navigate("/");
+        signin(values);
 
         resolve();
-      }, 3000);
+      }, 2000);
     });
   };
 
@@ -97,7 +101,7 @@ const Login = () => {
               Bienvenido de nuevo
             </Heading>
             <Text
-              mb="36px"
+              mb="30px"
               ms="4px"
               color={textColor}
               fontWeight="semibold"
@@ -105,7 +109,12 @@ const Login = () => {
             >
               Ingrese su correo electrónico y contraseña para iniciar sesión
             </Text>
-
+            {showError && (
+              <Alert status="error" mb={2}>
+                <AlertIcon />
+                ¡Email y/o contraseña son incorrectos!
+              </Alert>
+            )}
             {/**FORM login*/}
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
               <FormControl isInvalid={errors.email} mb="24px">
@@ -145,7 +154,6 @@ const Login = () => {
                     size="lg"
                     {...register("password", {
                       required: "*Ingrese su contraseña!",
-                      minLength: { value: 5, message: "*Mínimo 5 caracteres!" },
                     })}
                   />
                   <InputRightElement h={"full"}>

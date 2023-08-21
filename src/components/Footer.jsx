@@ -46,6 +46,7 @@ const SocialButton = ({ children, label, href }) => {
       _hover={{
         bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
       }}
+      title={label}
     >
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
