@@ -14,16 +14,18 @@ import { AuthContext } from "../contexts/AuthProvider";
 
 const RoutesMain = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
+  const [showAdmPanel, setShowAdmPanel] = useState(false);
 
-  /*const [redirectFlag, setRedirectFlag] = useState(false);
-
+  //Verificar si es Admin o Usuario comun
   useEffect(() => {
-    setRedirectFlag(isAuthenticated);
+    if (isAuthenticated) {
+      const verifyRole = user.roles.some((element) => {
+        return element.name === "Administrator" || element.name === "Assistant";
+      });
+      //console.log(verifyRole)
+      setShowAdmPanel(verifyRole);
+    }
   }, [isAuthenticated]);
-*/
-  const roleUser = user?.roles.map(
-    (e) => e.name.includes("Administrator") || e.name.includes("Assistant")
-  );
 
   return (
     <Routes>
@@ -33,7 +35,16 @@ const RoutesMain = () => {
         element={isAuthenticated ? <Navigate to="/tasks" /> : <Login />}
       />
       <Route path="/register" element={<Register />} />
-      <Route path="/admin" element={roleUser ? <Admin /> : <Navigate to="/tasks"/>}>
+      <Route
+        path="/admin"
+        element={
+          isAuthenticated === true && showAdmPanel ? (
+            <Admin />
+          ) : (
+            <Navigate to="/tasks" />
+          )
+        }
+      >
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/tasks" element={<ManagementTask />} />
         <Route path="/admin/users" element={<ManagementUser />} />

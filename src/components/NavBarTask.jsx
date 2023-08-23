@@ -2,14 +2,12 @@ import {
   Box,
   Flex,
   Avatar,
-  //Text,
   Button,
   Menu,
   MenuButton,
   MenuList,
   MenuItem,
   MenuDivider,
-  //useDisclosure,
   useColorModeValue,
   Stack,
   useColorMode,
@@ -21,20 +19,33 @@ import {
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { BsPencilSquare } from "react-icons/bs";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
 import { logoutRequest } from "../api/auth";
 
 const NavBarTask = () => {
   const { colorMode, toggleColorMode } = useColorMode();
-  const { isAuthenticated, user, setIsAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
+  const [showAdmPanel, setShowAdmPanel] = useState(false);
+
+  //Verificar si es Admin o Asistente
+  useEffect(() => {
+    if (isAuthenticated) {
+      const verifyRole = user.roles.some((element) => {
+        return element.name === "Administrator" || element.name === "Assistant";
+      });
+      //console.log(verifyRole)
+      setShowAdmPanel(verifyRole);
+    }
+  }, [isAuthenticated]);
+
   const naveg = useNavigate();
 
-  const handleAccessAdminPanel = () => { 
-    naveg("/admin")
-   }
-
-
+  const handleAccessAdminPanel = () => {
+    //console.log(verifyRole);
+    //if()
+    naveg("/admin");
+  };
 
   return (
     <>
@@ -129,12 +140,13 @@ const NavBarTask = () => {
                       <br />
                       <MenuDivider />
                       <MenuItem>Perfil</MenuItem>
-                      <MenuItem onClick={handleAccessAdminPanel}>Panel Administrativo</MenuItem>
+                      {showAdmPanel && (
+                        <MenuItem onClick={handleAccessAdminPanel}>
+                          Panel Administrativo
+                        </MenuItem>
+                      )}
                       <MenuItem
-                        onClick={() => {
-                          logoutRequest;
-                          setIsAuthenticated(false);
-                        }}
+                        onClick={() => logout()}
                       >
                         Cerrar sesión
                       </MenuItem>

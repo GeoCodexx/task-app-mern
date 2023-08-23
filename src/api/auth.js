@@ -2,17 +2,35 @@ import axios from "axios";
 
 const API = "http://localhost:3000/api";
 
+const axiosInstance = axios.create({
+  baseURL: API,
+  withCredentials: true,
+});
+
 export const registerRequest = async (user) => {
-  const response = await axios.post(`${API}/auth/register`, user);
+  const response = await axiosInstance.post("/auth/register", user);
   return response;
 };
 
 export const loginRequest = async (credentials) => {
-  const response = await axios.post(`${API}/auth/login`, credentials);
+  const response = await axiosInstance.post("/auth/login", credentials);
   return response;
 };
 
-export const logoutRequest = async () => {
-  const response = await axios.get(`${API}/auth/logout`);
+export const logoutRequest = () => {
+  axiosInstance.get("/auth/logout");
+};
+
+//export const verifyTokenRequest = async () => axios.get(`/auth/verify`);
+
+export const profileRequest = async () => {
+  const response = await axiosInstance.get("/auth/profile");
+  return response;
+};
+
+export const verifyState = async (token) => {
+  const response = await axios.get("http://localhost:3000/api/auth/verify", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
   return response;
 };
