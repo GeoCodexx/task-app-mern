@@ -10,7 +10,7 @@ const Home = () => {
         <HeroTask />
       </div>
       
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 };

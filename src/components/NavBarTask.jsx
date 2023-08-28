@@ -21,7 +21,7 @@ import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { BsPencilSquare } from "react-icons/bs";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
-import { logoutRequest } from "../api/auth";
+//import { logoutRequest } from "../api/auth";
 
 const NavBarTask = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -31,6 +31,7 @@ const NavBarTask = () => {
   //Verificar si es Admin o Asistente
   useEffect(() => {
     if (isAuthenticated) {
+      //console.log(user.roles)
       const verifyRole = user.roles.some((element) => {
         return element.name === "Administrator" || element.name === "Assistant";
       });
@@ -42,8 +43,6 @@ const NavBarTask = () => {
   const naveg = useNavigate();
 
   const handleAccessAdminPanel = () => {
-    //console.log(verifyRole);
-    //if()
     naveg("/admin");
   };
 

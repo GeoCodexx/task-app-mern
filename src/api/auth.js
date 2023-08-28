@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "http://localhost:3000/api";
+const API = "http://127.0.0.1:3000/api";
 
 const axiosInstance = axios.create({
   baseURL: API,
@@ -29,7 +29,7 @@ export const profileRequest = async () => {
 };
 
 export const verifyState = async (token) => {
-  const response = await axios.get("http://localhost:3000/api/auth/verify", {
+  const response = await axios.get("http://127.0.0.1:3000/api/auth/verify", {
     headers: { Authorization: `Bearer ${token}` },
   });
   return response;

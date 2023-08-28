@@ -7,14 +7,13 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
+  //FormLabel,
   HStack,
   Icon,
   Input,
   InputGroup,
   InputRightElement,
   Link,
-  Switch,
   Text,
   useColorModeValue,
   useToast,
@@ -77,6 +76,7 @@ const Register = () => {
       setTimeout(() => {
         //navegar a la ruta login para que el usuario se autentifique
         navig("/login");
+        //Volver a false el estado
         setIsRegistered(false);
       }, 3000);
     }

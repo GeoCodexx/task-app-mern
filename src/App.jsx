@@ -1,4 +1,5 @@
 //import Sidebar from "./components/Sidebar";
+import Footer from "./components/Footer";
 import RoutesMain from "./routes/RoutesMain";
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
   return (
     <>
       <RoutesMain />
+      <Footer/>
     </>
   );
 }
