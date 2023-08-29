@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, HStack, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, VStack, useColorModeValue } from "@chakra-ui/react";
+import { Avatar, Box, Center, Flex, HStack, Hide, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Show, Text, VStack, useColorModeValue } from "@chakra-ui/react";
 import {
   FiMenu,
   FiBell,
@@ -34,7 +34,18 @@ const MobileNav = ({ onOpen, ...rest }) => {
       >
         Logo
       </Text>
-
+      <Hide breakpoint='(max-width: 947px)'>
+      <Flex justify={"center"} alignContent={"center"} w={{lg:"auto", xl:"60%"}} mr={{lg:10, xl:20}}>
+      <Text
+        px={2}
+          textAlign={"center"}
+          
+          fontSize={{base:"xl", md:"2xl", xl:"3xl"}}
+          fontWeight="bold"
+          color={"gray.600"}
+        >
+          Sistema de gestión de contenidos
+        </Text></Flex></Hide>
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
           size="lg"

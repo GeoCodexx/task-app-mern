@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Box, Heading, Text, Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import heroImage from "../assets/img/post-it-nobg.png";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const HeroTask = () => {
+  const { isAuthenticated } = useContext(AuthContext);
   const [yOffset, setYOffset] = useState(0);
 
+  //configuracion para la animacion de la imagen del Hero
   useEffect(() => {
     const animationInterval = setInterval(() => {
       setYOffset((prevOffset) => (prevOffset === 7 ? -7 : 7));
@@ -55,7 +58,7 @@ const HeroTask = () => {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 1 }}
         >
-          <Link to="/register">
+          <Link to={isAuthenticated ? "/tasks" : "/register"}>
             <Button
               colorScheme="teal"
               size="lg"

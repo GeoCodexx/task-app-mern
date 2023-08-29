@@ -7,8 +7,8 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-import SidebarContent from "../components/SidebarContent";
-import MobileNav from "../components/MobileNav";
+import SidebarContent from "../../components/SidebarContent";
+import MobileNav from "../../components/MobileNav";
 import { Outlet } from "react-router-dom";
 
 const Admin = () => {

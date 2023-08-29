@@ -9,8 +9,6 @@ const Home = () => {
       <div style={{marginTop:"64px", minWidth: "340px"}}>
         <HeroTask />
       </div>
-      
-      {/* <Footer /> */}
     </>
   );
 };

@@ -23,11 +23,13 @@ import {
   Flex,
   useDisclosure,
   Tooltip,
+  Image,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { createTask, deleteTask, getAllTasks, updateTask } from "../api/tasks";
 import ModalConfirmation from "../components/ModalConfirmation";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import noDataImage from "../assets/img/no-data.svg";
 
 const Tasks = () => {
   //Color para las tarjetas
@@ -249,7 +251,7 @@ const Tasks = () => {
         bg={bgBoxes}
         minWidth={"340px"}
         mb={"65px"}
-        h={"full"}
+        minHeight="100vh"
       >
         <Heading textAlign="center" mb="5">
           Tareas
@@ -272,7 +274,12 @@ const Tasks = () => {
                 bg={bgBoxes}
               >
                 {listTasks.length === 0 ? (
-                  <Text>Ud. No tiene tareas creadas :(</Text>
+                  <>
+                    <Flex gridColumn={"1/-1"} flexDirection="column" justify={"center"} align={"center"}>
+                      <Image boxSize='350px' src={noDataImage} alt="Imagen de no resultados" />
+                      <Text fontSize={20} color={"gray.400"} textAlign={"center"} mt={3}>Aún no tiene tareas creadas. Use el formulario para registrar una tarea.</Text>
+                    </Flex>
+                  </>
                 ) : (
                   listTasks.map((elem, i) => (
                     <Card key={i} variant="filled" bg={bgCardTask}>

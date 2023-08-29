@@ -3,14 +3,16 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 //import Charts from "../pages/Charts";
-import Admin from "../pages/Admin";
-import ManagementTask from "../pages/ManagementTask";
-import ManagementUser from "../pages/ManagementUser";
-import Dashboard from "../pages/Dashboard";
+import Admin from "../pages/cms/Admin";
+import Dashboard from "../pages/cms/Dashboard";
 import Tasks from "../pages/Tasks";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
 import { AuthContext } from "../contexts/AuthProvider";
+import AdminPermissions from "../pages/cms/AdminPermissions";
+import AdminRoles from "../pages/cms/AdminRoles";
+import AdminUsers from "../pages/cms/AdminUsers";
+import AdminTasks from "../pages/cms/AdminTasks";
 
 const RoutesMain = () => {
   const { isAuthenticated, user } = useContext(AuthContext);
@@ -46,8 +48,11 @@ const RoutesMain = () => {
         }
       >
         <Route path="/admin/dashboard" element={<Dashboard />} />
-        <Route path="/admin/tasks" element={<ManagementTask />} />
-        <Route path="/admin/users" element={<ManagementUser />} />
+        <Route path="/admin/tasks" element={<AdminTasks />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/roles" element={<AdminRoles />} />
+        <Route path="/admin/permissions" element={<AdminPermissions />} />
+
       </Route>
       <Route
         path="/tasks"

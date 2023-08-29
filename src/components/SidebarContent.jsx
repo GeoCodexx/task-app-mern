@@ -15,11 +15,11 @@ import {
 } from "@chakra-ui/react";
 
 const LinkItems = [
-  { name: "Dashboard", icon: FiGrid },
-  { name: "Tareas", icon: FiFileText },
-  { name: "Usuarios", icon: FiUsers },
-  { name: "Roles", icon: LiaUsersCogSolid },
-  { name: "Permisos", icon: LiaUserShieldSolid },
+  { name: "Dashboard", icon: FiGrid, path:"/admin/dashboard" },
+  { name: "Tareas", icon: FiFileText, path:"/admin/tasks" },
+  { name: "Usuarios", icon: FiUsers, path:"/admin/users" },
+  { name: "Roles", icon: LiaUsersCogSolid, path:"/admin/roles" },
+  { name: "Permisos", icon: LiaUserShieldSolid, path:"/admin/permissions" },
   { name: "Configuración", icon: FiSettings },
 ];
 
@@ -42,7 +42,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
+        <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
