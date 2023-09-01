@@ -1,5 +1,10 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { useState } from "react";
 import { useAsyncDebounce } from "react-table";
 
@@ -13,7 +18,7 @@ const FilterTable = ({
 
   const onFilterChange = useAsyncDebounce(
     (value) => setGlobalFilter(value || undefined),
-    200
+    300
   );
 
   const handleInputChange = (e) => {
@@ -21,17 +26,19 @@ const FilterTable = ({
     onFilterChange(e.target.value);
   };
 
+  let bgBox = useColorModeValue("white", "gray.700");
   return (
     <>
-      <InputGroup bg="white">
+      <InputGroup bg={bgBox}>
         <InputLeftElement pointerEvents="none" color="gray.400">
           <SearchIcon />
         </InputLeftElement>
         <Input
+          type="search"
           placeholder="Buscar..."
           variant="outline"
           focusBorderColor="teal.400"
-          borderColor={"gray.300"}
+          borderColor={"gray.400"}
           value={value || ""}
           onChange={handleInputChange}
         />

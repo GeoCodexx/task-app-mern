@@ -1,33 +1,18 @@
 //import Sidebar from "./components/Sidebar";
 import Footer from "./components/Footer";
 import RoutesMain from "./routes/RoutesMain";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 
 function App() {
-  /*const { isAuthenticated, signin, user } = useAuth();
+  // Create a client
+  const queryClient = new QueryClient();
 
-  // Restaurar datos del usuario al cargar la página
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      const user = JSON.parse(storedUser);
-      signin(user);
-    }
-  }, [login]);
-
-  // Guardar datos del usuario al autenticarse
-  useEffect(() => {
-    if (isAuthenticated) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
-    }
-  }, [isAuthenticated]);
-
-*/
   return (
     <>
-      <RoutesMain />
-      <Footer/>
+      <QueryClientProvider client={queryClient}>
+        <RoutesMain />
+        <Footer />
+      </QueryClientProvider>
     </>
   );
 }

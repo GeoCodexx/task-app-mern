@@ -26,7 +26,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { createTask, deleteTask, getAllTasks, updateTask } from "../api/tasks";
+import { createTask, deleteTask, getTasks, updateTask } from "../api/tasks";
 import ModalConfirmation from "../components/ModalConfirmation";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import noDataImage from "../assets/img/no-data.svg";
@@ -46,7 +46,7 @@ const Tasks = () => {
   //Estados
   const [listTasks, setListTasks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [taskData, setTaskData] = useState("");
+  const [taskData, setTaskData] = useState({});
   //const [state, dispatch] = useReducer(initValues, second, third);
 
   //Definicion del hook useForm de react-hook-form
@@ -62,7 +62,7 @@ const Tasks = () => {
   //Get all tasks
   const getItems = async () => {
     try {
-      const response = await getAllTasks();
+      const response = await getTasks();
       setListTasks(response.data);
       if (isLoading) setIsLoading(false);
     } catch (error) {
@@ -112,7 +112,14 @@ const Tasks = () => {
     //Se dispone de la propiedad setValue del hook useForm() para asignar valores a los campos que controla
     setValue("title", task.title);
     setValue("description", task.description);
-    setValue("date", new Date(task.date).toISOString().slice(0, -1)); //Se agrego el metodo slice para quitar la Z de la fecha en formato ISO porque el INPUT tipo datetime-local no acepta el formato con la Z al final.
+
+    /*Formateando fecha "300 = 5 horas ya que estamos en Peru zona horaria GMT-5".
+    Lo hice de esta manera porque el input type="datetime-local" acepta el formato yyyy-mm-ddThh:mm:ss*/
+    let fecha = new Date(task.date);
+    fecha.setMinutes(fecha.getMinutes() - 300);
+    setValue("date", fecha.toISOString().slice(0,-1))
+
+    //setValue("date", new Date(task.date).toISOString().slice(0, -5)); //Se agrego el metodo slice para quitar la Z de la fecha en formato ISO porque el INPUT tipo datetime-local no acepta el formato con la Z al final.
 
     //Asignamos a un estado la tarea para que el usuario edite los datos necesarios y con la funcion updTask obtener los datos respectivos.
     setTaskData(task);
@@ -141,7 +148,7 @@ const Tasks = () => {
         reset();
 
         //Restablecer el estado que contiene la tarea a editar para que el boton cambie a Guardar
-        setTaskData("");
+        setTaskData({});
 
         //Actualizar la lista de tareas
         getItems();
@@ -202,7 +209,7 @@ const Tasks = () => {
   //Limpiar Formulario (Button Cancel)
   const cleanForm = () => {
     reset();
-    setTaskData("");
+    setTaskData({});
   };
 
   //Funcion para formatear fecha
@@ -217,7 +224,7 @@ const Tasks = () => {
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        if (taskData) {
+        if (Object.keys(taskData).length!==0) {
           updTask(values);
         } else {
           create(values);
@@ -402,7 +409,7 @@ const Tasks = () => {
                       type="submit"
                       w={{ base: "full", md: "auto" }}
                     >
-                      {taskData ? "Actualizar" : "Guardar"}
+                      {Object.keys(taskData).length!==0 ? "Actualizar" : "Guardar"}
                     </Button>
                     {}
                     <Button
@@ -423,8 +430,9 @@ const Tasks = () => {
       <ModalConfirmation
         isOpen={isOpen}
         onClose={onClose}
-        deleteTaskFunction={removeTask}
-        idTask={taskData._id}
+        message={"¿Estas seguro(a) de eliminar esta tarea?"}
+        deleteFunction={removeTask}
+        idItem={taskData._id}
       />
     </>
   );

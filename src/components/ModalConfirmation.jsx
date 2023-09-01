@@ -10,10 +10,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const ModalConfirmation = ({ isOpen, onClose, idTask, deleteTaskFunction }) => {
+const ModalConfirmation = ({ isOpen, onClose, message, idItem, deleteFunction }) => {
   const handleClick = () => {
-    console.log(idTask)
-    deleteTaskFunction(idTask);
+    //console.log(idTask)
+    deleteFunction(idItem);
   };
 
   return (
@@ -24,7 +24,7 @@ const ModalConfirmation = ({ isOpen, onClose, idTask, deleteTaskFunction }) => {
           <ModalHeader>Confirmar eliminación</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Estas seguro(a) de eliminar esta tarea?</Text>
+            <Text>{message}</Text>
           </ModalBody>
 
           <ModalFooter>

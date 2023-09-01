@@ -4,8 +4,21 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+//General
 export const getAllTasks = async () => {
-  const res = await instance.get("/list");
+  try {
+    const res = await instance.get("/list");
+    //console.log(res.data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error; // Vuelve a lanzar el error para manejarlo en otro lugar si es necesario
+  }
+};
+
+//Por usuario
+export const getTasks = async () => {
+  const res = await instance.get("/listbyuser");
   return res;
 };
 

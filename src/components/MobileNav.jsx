@@ -1,11 +1,26 @@
-import { Avatar, Box, Center, Flex, HStack, Hide, IconButton, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Show, Text, VStack, useColorModeValue } from "@chakra-ui/react";
 import {
-  FiMenu,
-  FiBell,
-  FiChevronDown,
-} from "react-icons/fi";
+  Avatar,
+  Box,
+  Flex,
+  HStack,
+  Hide,
+  Icon,
+  IconButton,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  VStack,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { useContext } from "react";
+import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
+import { AuthContext } from "../contexts/AuthProvider";
+import { BsPencilSquare } from "react-icons/bs";
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const { isAuthenticated, user, logout } = useContext(AuthContext);
   return (
     <Flex
       ml={{ base: 0, md: 60 }}
@@ -26,26 +41,30 @@ const MobileNav = ({ onOpen, ...rest }) => {
         icon={<FiMenu />}
       />
 
-      <Text
-        display={{ base: "flex", md: "none" }}
-        fontSize="2xl"
-        fontFamily="monospace"
-        fontWeight="bold"
-      >
-        Logo
-      </Text>
-      <Hide breakpoint='(max-width: 947px)'>
-      <Flex justify={"center"} alignContent={"center"} w={{lg:"auto", xl:"60%"}} mr={{lg:10, xl:20}}>
-      <Text
-        px={2}
-          textAlign={"center"}
-          
-          fontSize={{base:"xl", md:"2xl", xl:"3xl"}}
-          fontWeight="bold"
-          color={"gray.600"}
+      <Flex justify="center" align="center" display={{ base: "flex", md: "none" }}>
+            <Icon as={BsPencilSquare} boxSize={9} mr={2} color="teal.400" />
+            <Text fontSize="2xl" fontWeight="bold">
+              Task App
+            </Text>
+      </Flex>
+      <Hide breakpoint="(max-width: 947px)">
+        <Flex
+          justify={"center"}
+          alignContent={"center"}
+          w={{ lg: "auto", xl: "60%" }}
+          mr={{ lg: 10, xl: 20 }}
         >
-          Sistema de gestión de contenidos
-        </Text></Flex></Hide>
+          <Text
+            px={2}
+            textAlign={"center"}
+            fontSize={{ base: "xl", md: "2xl", xl: "3xl" }}
+            fontWeight="semibold"
+            color={"gray.600"}
+          >
+            Sistema de gestión de contenidos
+          </Text>
+        </Flex>
+      </Hide>
       <HStack spacing={{ base: "0", md: "6" }}>
         <IconButton
           size="lg"
@@ -73,9 +92,11 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   spacing="1px"
                   ml="2"
                 >
-                  <Text fontSize="sm">Justina Clark</Text>
+                  <Text fontSize="sm">
+                    {isAuthenticated ? user.names : "Brendan Eich"}
+                  </Text>
                   <Text fontSize="xs" color="gray.600">
-                    Admin
+                    {isAuthenticated? user.roles[0].name: "CEO"}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>
@@ -87,11 +108,9 @@ const MobileNav = ({ onOpen, ...rest }) => {
               bg={useColorModeValue("white", "gray.900")}
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
-              <MenuItem>Billing</MenuItem>
-              <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem>Perfil</MenuItem>
+              <MenuItem>Configuración</MenuItem>
+              <MenuItem>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>
