@@ -48,7 +48,7 @@ const TableWithPagination = ({ columns, data, handleAdd, labelBtn }) => {
     nextPage,
     previousPage,
     setPageSize,
-    preGlobalFilteredRows,
+    //preGlobalFilteredRows,
     setGlobalFilter,
     state: { pageIndex, pageSize, globalFilter },
   } = useTable(
@@ -80,7 +80,7 @@ const TableWithPagination = ({ columns, data, handleAdd, labelBtn }) => {
         {/**INPUT SEARCH */}
         <Box bg={bgBoxes} borderRadius={"20px"} w={"full"}>
           <FilterTable
-            preGlobalFilteredRows={preGlobalFilteredRows}
+            //preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={globalFilter}
             setGlobalFilter={setGlobalFilter}
           />

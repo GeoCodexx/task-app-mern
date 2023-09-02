@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useAsyncDebounce } from "react-table";
 
 const FilterTable = ({
-  preGlobalFilteredRows,
+  //preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
 }) => {
@@ -18,7 +18,7 @@ const FilterTable = ({
 
   const onFilterChange = useAsyncDebounce(
     (value) => setGlobalFilter(value || undefined),
-    300
+    200
   );
 
   const handleInputChange = (e) => {

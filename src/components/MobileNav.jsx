@@ -41,11 +41,15 @@ const MobileNav = ({ onOpen, ...rest }) => {
         icon={<FiMenu />}
       />
 
-      <Flex justify="center" align="center" display={{ base: "flex", md: "none" }}>
-            <Icon as={BsPencilSquare} boxSize={9} mr={2} color="teal.400" />
-            <Text fontSize="2xl" fontWeight="bold">
-              Task App
-            </Text>
+      <Flex
+        justify="center"
+        align="center"
+        display={{ base: "flex", md: "none" }}
+      >
+        <Icon as={BsPencilSquare} boxSize={9} mr={2} color="teal.400" />
+        <Text fontSize="2xl" fontWeight="bold">
+          Task App
+        </Text>
       </Flex>
       <Hide breakpoint="(max-width: 947px)">
         <Flex
@@ -82,7 +86,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack>
                 <Avatar
                   size={"sm"}
-                  src={
+                  src={isAuthenticated ? user.image :
                     "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
                   }
                 />
@@ -96,7 +100,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                     {isAuthenticated ? user.names : "Brendan Eich"}
                   </Text>
                   <Text fontSize="xs" color="gray.600">
-                    {isAuthenticated? user.roles[0].name: "CEO"}
+                    {isAuthenticated ? user.role.name : "CEO"}
                   </Text>
                 </VStack>
                 <Box display={{ base: "none", md: "flex" }}>

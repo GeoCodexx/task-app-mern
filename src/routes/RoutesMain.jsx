@@ -21,9 +21,8 @@ const RoutesMain = () => {
   //Verificar si es Admin o Usuario comun
   useEffect(() => {
     if (isAuthenticated) {
-      const verifyRole = user.roles.some((element) => {
-        return element.name === "Administrator" || element.name === "Assistant";
-      });
+      const verifyRole =
+        user.role.name === "Administrator" || user.role.name === "Assistant";
       //console.log(verifyRole)
       setShowAdmPanel(verifyRole);
     }
@@ -52,7 +51,6 @@ const RoutesMain = () => {
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/roles" element={<AdminRoles />} />
         <Route path="/admin/permissions" element={<AdminPermissions />} />
-
       </Route>
       <Route
         path="/tasks"

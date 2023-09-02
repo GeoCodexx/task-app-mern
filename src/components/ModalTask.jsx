@@ -14,15 +14,17 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { createTask, updateTask } from "../api/tasks";
+import {
+  createTask as createTaskAPI,
+  updateTask as updateTaskAPI,
+} from "../api/tasks";
 
 const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
   //console.log(taskData);
 
   const initialRef = useRef(null);
-  const [taskTemp, setTaskTemp] = useState({});
 
   //Para usar los mensajes Toast de confirmacion
   const toast = useToast();
@@ -44,7 +46,7 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
       //Se dispone de la propiedad setValue del hook useForm() para asignar valores a los campos que controla
       setValue("title", taskData.title);
       setValue("description", taskData.description);
-      
+
       /*Formateando fecha "300 = 5 horas ya que estamos en Peru zona horaria GMT-5".
     Lo hice de esta manera porque el input type="datetime-local" acepta el formato yyyy-mm-ddThh:mm:ss*/
       let fecha = new Date(taskData.date);
@@ -53,24 +55,25 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
       //setValue("date", new Date(taskData.date).toISOString().slice(0, -5));
 
       //Asignamos a un estado la tarea para que el usuario edite los datos necesarios y con la funcion updTask obtener los datos respectivos.
-      setTaskTemp(taskData);
+      //setTaskTemp(taskData);
 
       //Pasamos el focus al Input de titulo
       setFocus("title");
     } else {
       //Si "taskData" es un objeto vacío, Limpiar el formulario para registrar nueva tarea
       reset();
+      setFocus("title");
     }
   }, [taskData]);
 
   //Create Task
-  const create = async (task) => {
+  const createTask = async (task) => {
     try {
       //Convirtiendo a tipo date la fecha para que el backend lo reciba sin problema alguno.
       const dataFormatted = { ...task, date: new Date(task.date) };
       //console.log(dateFormatted);
 
-      const { data } = await createTask(dataFormatted);
+      const { data } = await createTaskAPI(dataFormatted);
       if (data) {
         //Mostrar mensaje de confirmacion
         toast({
@@ -102,12 +105,13 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
   };
 
   //Edit Task
-  const updTask = async (task) => {
+  const updateTask = async (task) => {
     //console.log(task);
     try {
-      const id = taskData._id;
-
-      const res = await updateTask(id, { ...task, date: new Date(task.date) });
+      const res = await updateTaskAPI(taskData._id, {
+        ...task,
+        date: new Date(task.date),
+      });
       if (res.data) {
         toast({
           title: "Tarea actualizada",
@@ -121,7 +125,7 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
         reset();
 
         //Restablecer el estado que contiene la tarea a editar para que el boton cambie a Guardar
-        setTaskTemp({});
+        //setTaskTemp({});
 
         //Refrescar los datos en useQuery();
         refetch();
@@ -141,21 +145,14 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
     }
   };
 
-  //Limpiar Formulario (Button Cancel)
-  const cleanForm = () => {
-    reset();
-    setTaskTemp({});
-    onClose();
-  };
-
   //Manejar los datos del formulario
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         if (Object.keys(taskData).length !== 0) {
-          updTask(values);
+          updateTask(values);
         } else {
-          create(values);
+          createTask(values);
         }
         resolve();
       }, 1200);
@@ -174,7 +171,7 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Crear nueva tarea</ModalHeader>
+          <ModalHeader>Crear tarea</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
@@ -246,7 +243,7 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
                 </Button>
 
                 <Button
-                  onClick={cleanForm}
+                  onClick={() => onClose()}
                   w={{ base: "full", md: "auto" }}
                   ml={{ base: "0px", md: "14px" }}
                   mt={{ base: 2, md: "0px" }}

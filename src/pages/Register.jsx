@@ -69,7 +69,7 @@ const Register = () => {
         title: "Cuenta creada",
         description: "Se ha registrado correctamente.",
         status: "success",
-        duration: 3000,
+        duration: 1800,
         isClosable: true,
         colorScheme: "teal",
       });
@@ -78,7 +78,7 @@ const Register = () => {
         navig("/login");
         //Volver a false el estado
         setIsRegistered(false);
-      }, 3000);
+      }, 2000);
     }
     //console.log(isRegistered);
   }, [isRegistered]);
