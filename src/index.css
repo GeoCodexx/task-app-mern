@@ -1,3 +1,10 @@
 *{
     box-sizing: border-box;
 }
+
+/*
+#sidebar a.active {
+    color: gray;
+    font-weight: 600;
+    background-color: rgba(0,128,128,0.5);
+}/*

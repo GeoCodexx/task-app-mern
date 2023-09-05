@@ -17,7 +17,6 @@ const LinkItems = [
   { name: "Usuarios", icon: FiUsers, path: "/admin/users" },
   { name: "Roles", icon: LiaUsersCogSolid, path: "/admin/roles" },
   { name: "Permisos", icon: LiaUserShieldSolid, path: "/admin/permissions" },
-  { name: "Configuración", icon: FiSettings },
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
@@ -33,10 +32,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Flex
-          justify="center"
-          align="center"
-        >
+        <Flex justify="center" align="center">
           <Icon as={BsPencilSquare} boxSize={9} mr={2} color="teal.400" />
           <Text fontSize="2xl" fontWeight="bold">
             Task App
@@ -44,11 +40,13 @@ const SidebarContent = ({ onClose, ...rest }) => {
         </Flex>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} path={link.path}>
-          {link.name}
-        </NavItem>
-      ))}
+      <nav id="sidebar">
+        {LinkItems.map((link) => (
+          <NavItem key={link.name} icon={link.icon} path={link.path}>
+            {link.name}
+          </NavItem>
+        ))}
+      </nav>
     </Box>
   );
 };

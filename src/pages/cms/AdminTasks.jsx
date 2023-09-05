@@ -5,6 +5,7 @@ import {
   HStack,
   Heading,
   Image,
+  Spinner,
   Text,
   Tooltip,
   useColorModeValue,
@@ -22,7 +23,6 @@ import ModalConfirmation from "../../components/ModalConfirmation";
 import noDataTableImage from "../../assets/img/no-data-other.svg";
 
 const AdminTasks = () => {
-  
   //Propiedades para los colores ligh/dark
   let bgBoxes = useColorModeValue("white", "gray.700");
 
@@ -164,9 +164,18 @@ const AdminTasks = () => {
     }
   };
 
-
   if (isLoading) {
-    return <span>Loading...</span>;
+    return (
+      <Flex justify={"center"} align={"center"} minH={"100vh"}>
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="teal.400"
+          size="xl"
+        />
+      </Flex>
+    );
   }
 
   if (isError) {

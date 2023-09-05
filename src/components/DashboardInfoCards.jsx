@@ -1,13 +1,18 @@
 import {
+  Box,
   Flex,
   Grid,
   GridItem,
   Icon,
+  Skeleton,
+  SkeletonCircle,
+  SkeletonText,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaClipboardList, FaTasks, FaUsers } from "react-icons/fa";
+import { getDataInfoCards } from "../api/charts";
 
 const DashboardInfoCards = () => {
   //color fondo
@@ -15,6 +20,128 @@ const DashboardInfoCards = () => {
   const bgIcon = useColorModeValue("teal.400", "none");
   const colorIcon = useColorModeValue("white", "teal.300");
   const colorText = useColorModeValue("gray.500", "gray.400");
+
+  const [dataCards, setDataCards] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getDataInfoCards();
+        setDataCards(res);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading)
+    return (
+      <>
+        <Grid
+          templateColumns={{
+            base: "repeat(1, 1fr)",
+            md: "repeat(2, 1fr)",
+            xl: "repeat(4, 1fr)",
+          }}
+          gap={6}
+          px={{ base: "4", xl: "15" }}
+        >
+          <GridItem
+            w="100%"
+            h="94px"
+            bg={bgBox}
+            p="22px"
+            borderRadius="xl"
+            shadow={"md"}
+          >
+            <Grid templateColumns={"repeat(3, 1fr)"}>
+              <GridItem colSpan={2}>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="2"
+                />
+              </GridItem>
+              <GridItem colSpan={1} mx={"auto"}>
+                <SkeletonCircle size="14" />
+              </GridItem>
+            </Grid>
+          </GridItem>
+          <GridItem
+            w="100%"
+            h="94px"
+            bg={bgBox}
+            p="22px"
+            borderRadius="xl"
+            shadow={"md"}
+          >
+            <Grid templateColumns={"repeat(3, 1fr)"}>
+              <GridItem colSpan={2}>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="2"
+                />
+              </GridItem>
+              <GridItem colSpan={1} mx={"auto"}>
+                <SkeletonCircle size="14" />
+              </GridItem>
+            </Grid>
+          </GridItem>
+          <GridItem
+            w="100%"
+            h="94px"
+            bg={bgBox}
+            p="22px"
+            borderRadius="xl"
+            shadow={"md"}
+          >
+            <Grid templateColumns={"repeat(3, 1fr)"}>
+              <GridItem colSpan={2}>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="2"
+                />
+              </GridItem>
+              <GridItem colSpan={1} mx={"auto"}>
+                <SkeletonCircle size="14" />
+              </GridItem>
+            </Grid>
+          </GridItem>
+          <GridItem
+            w="100%"
+            h="94px"
+            bg={bgBox}
+            p="22px"
+            borderRadius="xl"
+            shadow={"md"}
+          >
+            <Grid templateColumns={"repeat(3, 1fr)"}>
+              <GridItem colSpan={2}>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="2"
+                />
+              </GridItem>
+              <GridItem colSpan={1} mx={"auto"}>
+                <SkeletonCircle size="14" />
+              </GridItem>
+            </Grid>
+          </GridItem>
+        </Grid>
+      </>
+    );
+
   return (
     <>
       <Grid
@@ -41,7 +168,7 @@ const DashboardInfoCards = () => {
                 Total Tareas
               </Text>
               <Text fontWeight="bold" fontSize="2xl" textAlign="center">
-                23
+                {dataCards.tasks}
               </Text>
             </Flex>
             <Flex
@@ -72,7 +199,7 @@ const DashboardInfoCards = () => {
                 Total Usuarios
               </Text>
               <Text fontWeight="bold" fontSize="2xl" textAlign="center">
-                23
+                {dataCards.users}
               </Text>
             </Flex>
             <Flex
@@ -103,7 +230,7 @@ const DashboardInfoCards = () => {
                 Total Roles
               </Text>
               <Text fontWeight="bold" fontSize="2xl" textAlign="center">
-                23
+                {dataCards.roles}
               </Text>
             </Flex>
             <Flex
@@ -134,7 +261,7 @@ const DashboardInfoCards = () => {
                 Total Permisos
               </Text>
               <Text fontWeight="bold" fontSize="2xl" textAlign="center">
-                23
+                {dataCards.permissions}
               </Text>
             </Flex>
             <Flex
