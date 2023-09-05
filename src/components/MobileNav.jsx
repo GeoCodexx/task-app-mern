@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   HStack,
   Hide,
@@ -12,14 +13,18 @@ import {
   MenuList,
   Text,
   VStack,
+  useColorMode,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useContext } from "react";
 import { FiMenu, FiBell, FiChevronDown } from "react-icons/fi";
 import { AuthContext } from "../contexts/AuthProvider";
 import { BsPencilSquare } from "react-icons/bs";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const titleColor = useColorModeValue("gray.600", "gray.500");
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   return (
     <Flex
@@ -61,15 +66,23 @@ const MobileNav = ({ onOpen, ...rest }) => {
           <Text
             px={2}
             textAlign={"center"}
-            fontSize={{ base: "xl", md: "2xl", xl: "3xl" }}
-            fontWeight="semibold"
-            color={"gray.600"}
+            fontSize={{ base: "lg", md: "xl", xl: "2xl" }}
+            fontWeight="bold"
+            color={titleColor}
           >
-            Sistema de gestión de contenidos
+            SISTEMA DE GESTIÓN DE CONTENIDOS
           </Text>
         </Flex>
       </Hide>
       <HStack spacing={{ base: "0", md: "6" }}>
+        {/**Button theme dark/light */}
+        <Button
+          onClick={toggleColorMode}
+          variant="ghost"
+          display={{ base: "none", md: "block" }}
+        >
+          {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+        </Button>
         <IconButton
           size="lg"
           variant="ghost"
@@ -86,8 +99,10 @@ const MobileNav = ({ onOpen, ...rest }) => {
               <HStack>
                 <Avatar
                   size={"sm"}
-                  src={isAuthenticated ? user.image :
-                    "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                  src={
+                    isAuthenticated
+                      ? user.image
+                      : "https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
                   }
                 />
                 <VStack
@@ -113,8 +128,8 @@ const MobileNav = ({ onOpen, ...rest }) => {
               borderColor={useColorModeValue("gray.200", "gray.700")}
             >
               <MenuItem>Perfil</MenuItem>
-              <MenuItem>Configuración</MenuItem>
-              <MenuItem>Cerrar sesión</MenuItem>
+              <MenuItem>Cambiar contraseña</MenuItem>
+              <MenuItem onClick={() => logout()}>Cerrar sesión</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

@@ -31,7 +31,7 @@ const NavBarTask = () => {
   useEffect(() => {
     if (isAuthenticated) {
       //console.log(user.roles)
-      const verifyRole = user.role.name === "Administrator" || user.role.name === "Assistant";
+      const verifyRole = user.role.name === "Administrador" || user.role.name === "Asistente";
       //console.log(verifyRole)
       setShowAdmPanel(verifyRole);
     }

@@ -32,7 +32,7 @@ const TableWithPagination = ({ columns, data, handleAdd, labelBtn }) => {
   
   //Propiedades para los colores ligh/dark
   let bgBoxes = useColorModeValue("white", "gray.700");
-  let bgRowHighlight = useColorModeValue("gray.50", "gray.600");
+  let bgRowHighlight = useColorModeValue("gray.50", "gray.800");
 
   const {
     getTableProps,

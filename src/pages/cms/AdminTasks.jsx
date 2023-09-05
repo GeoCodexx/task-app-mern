@@ -61,7 +61,7 @@ const AdminTasks = () => {
         Cell: ({ row }) => `${row.original.description.substring(0, 14)}...`,
       },
       {
-        Header: "Fecha Realizar",
+        Header: "F. Realizar",
         accessor: "date",
         Cell: ({ row }) => new Date(row.original.date).toLocaleString(),
       },
@@ -72,7 +72,7 @@ const AdminTasks = () => {
           `${row.original.user.names} ${row.original.user.matlastname}`,
       },
       {
-        Header: "Fecha Creación",
+        Header: "F. Creación",
         accessor: "createdAt",
         Cell: ({ row }) => new Date(row.original.createdAt).toLocaleString(),
       },
@@ -87,6 +87,7 @@ const AdminTasks = () => {
                 size={{ base: "sm", md: "md" }}
                 colorScheme="blue"
                 variant={"ghost"}
+                _focus={{ boxShadow: "none" }}
               >
                 <EditIcon boxSize={5} />
               </Button>

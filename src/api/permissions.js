@@ -1,11 +1,11 @@
 import axios from "axios";
 const instance = axios.create({
-  baseURL: "http://127.0.0.1:3000/api/roles",
+  baseURL: "http://127.0.0.1:3000/api/permissions",
   withCredentials: true,
 });
 
 //General
-export const getRoles = async () => {
+export const getPermissions = async () => {
   try {
     const res = await instance.get("/list");
     return res.data;
@@ -15,17 +15,7 @@ export const getRoles = async () => {
   }
 };
 
-export const getRole = async (id) => {
-  try {
-    const res = await instance.get(`/detail/${id}`);
-    return res.data;
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-};
-
-export const createRole = async (user) => {
+export const createPermission = async (user) => {
   try {
     const res = await instance.post("/create", user);
     return res.data;
@@ -35,7 +25,8 @@ export const createRole = async (user) => {
   }
 };
 
-export const updateRole = async (id, user) => {
+
+export const updatePermission = async (id, user) => {
   try {
     const res = await instance.put(`/update/${id}`, user);
     return res.data;
@@ -45,7 +36,7 @@ export const updateRole = async (id, user) => {
   }
 };
 
-export const deleteRole = async (id) => {
+export const deletePermission = async (id) => {
   try {
     const res = await instance.delete(`/delete/${id}`);
     return res;

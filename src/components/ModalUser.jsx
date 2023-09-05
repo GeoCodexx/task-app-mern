@@ -14,7 +14,7 @@ import {
   Select,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   createUser as createUserAPI,
@@ -168,7 +168,9 @@ const ModalUser = ({ isOpen, onClose, userData, refetch }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign={"center"}>Crear usuario</ModalHeader>
+          <ModalHeader textAlign={"center"}>{Object.keys(userData).length === 0
+              ? "Crear usuario"
+              : "Actualizar usuario"}</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">

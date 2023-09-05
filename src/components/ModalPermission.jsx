@@ -11,19 +11,16 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Textarea,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
-  createTask as createTaskAPI,
-  updateTask as updateTaskAPI,
-} from "../api/tasks";
+  createPermission as createPermissionAPI,
+  updatePermission as updatePermissionAPI,
+} from "../api/permissions";
 
-const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
-  //console.log(taskData);
-
+const ModalPermission = ({ isOpen, onClose, permissionData, refetch }) => {
   //Para usar los mensajes Toast de confirmacion
   const toast = useToast();
 
@@ -37,45 +34,28 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
     setFocus,
   } = useForm();
 
-  //Si trae datos en las props en taskData (cuando haga click en editar).
   useEffect(() => {
-    //Se comprueba que "taskData" no este vacío para setear los valores de la fila seleccionada al formulario.
-    if (Object.keys(taskData).length !== 0) {
-      //Se dispone de la propiedad setValue del hook useForm() para asignar valores a los campos que controla
-      setValue("title", taskData.title);
-      setValue("description", taskData.description);
-
-      /*Formateando fecha "300 = 5 horas ya que estamos en Peru zona horaria GMT-5".
-    Lo hice de esta manera porque el input type="datetime-local" acepta el formato yyyy-mm-ddThh:mm:ss*/
-      let fecha = new Date(taskData.date);
-      fecha.setMinutes(fecha.getMinutes() - 300);
-      setValue("date", fecha.toISOString().slice(0, -5));
-      //setValue("date", new Date(taskData.date).toISOString().slice(0, -5));
-
-      //Asignamos a un estado la tarea para que el usuario edite los datos necesarios y con la funcion updTask obtener los datos respectivos.
-      //setTaskTemp(taskData);
+    if (Object.keys(permissionData).length !== 0) {
+      setValue("name", permissionData.name);
+      setValue("reference", permissionData.reference);
 
       //Pasamos el focus al Input de titulo
-      setFocus("title");
+      setFocus("name");
     } else {
-      //Si "taskData" es un objeto vacío, Limpiar el formulario para registrar nueva tarea
+      //Si "permissionData" es un objeto vacío, Limpiar el formulario para registrar nueva tarea
       reset();
-      setFocus("title");
+      setFocus("name");
     }
-  }, [taskData]);
+  }, [permissionData]);
 
-  //Create Task
-  const createTask = async (task) => {
+  //Create Permission
+  const createPermission = async (permission) => {
     try {
-      //Convirtiendo a tipo date la fecha para que el backend lo reciba sin problema alguno.
-      const dataFormatted = { ...task, date: new Date(task.date) };
-      //console.log(dateFormatted);
-
-      const { data } = await createTaskAPI(dataFormatted);
-      if (data) {
+      const rpta = await createPermissionAPI(permission);
+      if (rpta) {
         //Mostrar mensaje de confirmacion
         toast({
-          title: "Tarea agregada",
+          title: "Permiso agregado",
           description: "Tarea registrada correctamente",
           status: "success",
           duration: 1800,
@@ -102,17 +82,14 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
     }
   };
 
-  //Edit Task
-  const updateTask = async (task) => {
-    //console.log(task);
+  //Edit permission
+  const updatePermission = async (permission) => {
+    //console.log(permission);
     try {
-      const res = await updateTaskAPI(taskData._id, {
-        ...task,
-        date: new Date(task.date),
-      });
-      if (res.data) {
+      const res = await updatePermissionAPI(permissionData._id, permission);
+      if (res) {
         toast({
-          title: "Tarea actualizada",
+          title: "Permiso actualizado",
           description: "Datos actualizados correctamente",
           status: "success",
           duration: 2000,
@@ -121,10 +98,6 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
         });
         //Limpiar formulario
         reset();
-
-        //Restablecer el estado que contiene la tarea a editar para que el boton cambie a Guardar
-        //setTaskTemp({});
-
         //Refrescar los datos en useQuery();
         refetch();
         //Cerrar modal
@@ -147,19 +120,17 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        if (Object.keys(taskData).length !== 0) {
-          updateTask(values);
+        if (Object.keys(permissionData).length !== 0) {
+          updatePermission(values);
         } else {
-          createTask(values);
+          createPermission(values);
         }
         resolve();
       }, 1200);
     });
   };
-
   return (
     <>
-      {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
       <Modal
         //initialFocusRef={initialRef}
@@ -169,60 +140,47 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader textAlign={"center"}>{Object.keys(taskData).length === 0
-              ? "Crear tarea"
-              : "Actualizar tarea"}</ModalHeader>
+          <ModalHeader textAlign={"center"}>
+            {Object.keys(permissionData).length === 0
+              ? "Crear permiso"
+              : "Actualizar permiso"}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-              <FormControl isInvalid={errors.title}>
-                <FormLabel htmlFor="title">Título</FormLabel>
+              <FormControl isInvalid={errors.name}>
+                <FormLabel htmlFor="name">Nombre</FormLabel>
                 <Input
-                  id="title"
-                  placeholder="ej. Aprender React..."
+                  id="name"
                   focusBorderColor="teal.400"
-                  {...register("title", {
+                  {...register("name", {
                     required: "*Rellene este campo",
                     minLength: {
-                      value: 4,
-                      message: "*Mínimo 4 caracteres",
+                      value: 3,
+                      message: "*Mínimo 3 caracteres",
                     },
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.title && errors.title.message}
+                  {errors.name && errors.name.message}
                 </FormErrorMessage>
               </FormControl>
-              <FormControl isInvalid={errors.description} my={4}>
-                <FormLabel htmlFor="description">Descripción</FormLabel>
-                <Textarea
-                  id="description"
-                  placeholder="Describe la tarea..."
+              <FormControl isInvalid={errors.reference} my={4}>
+                <FormLabel htmlFor="reference">Referencia</FormLabel>
+                <Input
+                  id="reference"
+                  placeholder="Ej. usuarios, tareas, roles, permisos..."
                   focusBorderColor="teal.400"
-                  {...register("description", {
+                  {...register("reference", {
                     required: "*Rellene este campo",
                     minLength: {
-                      value: 8,
-                      message: "*Mínimo 10 caracteres",
+                      value: 3,
+                      message: "*Mínimo 3 caracteres",
                     },
                   })}
                 />
                 <FormErrorMessage>
-                  {errors.description && errors.description.message}
-                </FormErrorMessage>
-              </FormControl>
-              <FormControl isInvalid={errors.date} my={4}>
-                <Input
-                  placeholder="Seleccione una fecha y hora"
-                  focusBorderColor="teal.400"
-                  size="md"
-                  type="datetime-local"
-                  {...register("date", {
-                    required: "*Ingrese una fecha y hora",
-                  })}
-                />
-                <FormErrorMessage>
-                  {errors.date && errors.date.message}
+                  {errors.reference && errors.reference.message}
                 </FormErrorMessage>
               </FormControl>
               <Flex
@@ -237,7 +195,7 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
                   type="submit"
                   w={{ base: "full", md: "auto" }}
                 >
-                  {Object.keys(taskData).length === 0
+                  {Object.keys(permissionData).length === 0
                     ? "Guardar"
                     : "Actualizar"}
                 </Button>
@@ -259,4 +217,4 @@ const ModalTask = ({ isOpen, onClose, taskData, refetch }) => {
   );
 };
 
-export default ModalTask;
+export default ModalPermission;

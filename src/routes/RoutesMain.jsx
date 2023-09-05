@@ -22,7 +22,7 @@ const RoutesMain = () => {
   useEffect(() => {
     if (isAuthenticated) {
       const verifyRole =
-        user.role.name === "Administrator" || user.role.name === "Assistant";
+        user.role.name === "Administrador" || user.role.name === "Asistente";
       //console.log(verifyRole)
       setShowAdmPanel(verifyRole);
     }
@@ -54,7 +54,7 @@ const RoutesMain = () => {
       </Route>
       <Route
         path="/tasks"
-        element={isAuthenticated ? <Tasks /> : <Navigate to="/login" replace />}
+        element={isAuthenticated ? <Tasks /> : <Navigate to="/" replace />}
       />
       <Route path="*" element={<NotFound />}></Route>
     </Routes>
