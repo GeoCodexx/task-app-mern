@@ -15,23 +15,27 @@ import {
   Icon,
   Text,
   Link,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { BsPencilSquare } from "react-icons/bs";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../contexts/AuthProvider";
+import ModalProfile from "./ModalProfile";
 
 const NavBarTask = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isAuthenticated, user, logout } = useContext(AuthContext);
   const [showAdmPanel, setShowAdmPanel] = useState(false);
+  const modalProfile = useDisclosure();
 
   //Verificar si es Admin o Asistente
   useEffect(() => {
     if (isAuthenticated) {
       //console.log(user.roles)
-      const verifyRole = user.role.name === "Administrador" || user.role.name === "Asistente";
+      const verifyRole =
+        user.role.name === "Administrador" || user.role.name === "Asistente";
       //console.log(verifyRole)
       setShowAdmPanel(verifyRole);
     }
@@ -135,15 +139,13 @@ const NavBarTask = () => {
                       </Center>
                       <br />
                       <MenuDivider />
-                      <MenuItem>Perfil</MenuItem>
+                      <MenuItem onClick={modalProfile.onOpen}>Perfil</MenuItem>
                       {showAdmPanel && (
                         <MenuItem onClick={handleAccessAdminPanel}>
                           Panel Administrativo
                         </MenuItem>
                       )}
-                      <MenuItem
-                        onClick={() => logout()}
-                      >
+                      <MenuItem onClick={() => logout()}>
                         Cerrar sesión
                       </MenuItem>
                     </MenuList>
@@ -153,6 +155,11 @@ const NavBarTask = () => {
             </Stack>
           </Flex>
         </Flex>
+        <ModalProfile
+          isOpen={modalProfile.isOpen}
+          onClose={modalProfile.onClose}
+          dataUser={user}
+        />
       </Box>
     </>
   );

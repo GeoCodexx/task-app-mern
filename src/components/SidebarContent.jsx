@@ -10,6 +10,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { BsPencilSquare } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiGrid, path: "/admin/dashboard" },
@@ -32,12 +33,14 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Flex justify="center" align="center">
-          <Icon as={BsPencilSquare} boxSize={9} mr={2} color="teal.400" />
-          <Text fontSize="2xl" fontWeight="bold">
-            Task App
-          </Text>
-        </Flex>
+        <Link to={"/tasks"}>
+          <Flex justify="center" align="center">
+            <Icon as={BsPencilSquare} boxSize={9} mr={2} color="teal.400" />
+            <Text fontSize="2xl" fontWeight="bold">
+              Task App
+            </Text>
+          </Flex>
+        </Link>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       <nav id="sidebar">

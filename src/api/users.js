@@ -55,3 +55,13 @@ export const deleteUser = async (id) => {
     throw error;
   }
 };
+
+export const verifyPwd = async (id, data) => {
+  try {
+    const res = await instance.post(`/verifypwd/${id}`, data);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
