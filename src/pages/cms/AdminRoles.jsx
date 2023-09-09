@@ -16,13 +16,20 @@ import { useQuery } from "@tanstack/react-query";
 
 import TableWithPagination from "../../components/TableWithPagination";
 import { deleteRole, getRoles } from "../../api/roles";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import ModalRole from "../../components/ModalRole";
 import ModalConfirmation from "../../components/ModalConfirmation";
 import noDataTableImage from "../../assets/img/no-data-other.svg";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const AdminRoles = () => {
+  //Contexto gestion de permisos
+  const { user } = useContext(AuthContext);
+  const permsUser = user?.role?.permissions?.map((item) => {
+    if (item.reference === "roles") return item.name;
+  });
+
   //Propiedades para los colores ligh/dark
   let bgBoxes = useColorModeValue("white", "gray.700");
 
@@ -70,27 +77,31 @@ const AdminRoles = () => {
         accessor: "options",
         Cell: ({ row }) => (
           <HStack spacing="0px">
-            <Tooltip label="Editar" hasArrow>
-              <Button
-                onClick={() => handleEdit(row.original)}
-                size={{ base: "sm", md: "md" }}
-                colorScheme="blue"
-                variant={"ghost"}
-              >
-                <EditIcon boxSize={5} />
-              </Button>
-            </Tooltip>
-            <Tooltip label="Eliminar" hasArrow>
-              <Button
-                onClick={() => handleDelete(row.original._id)}
-                ml={4}
-                size={{ base: "sm", md: "md" }}
-                colorScheme="red"
-                variant={"ghost"}
-              >
-                <DeleteIcon boxSize={5} />
-              </Button>
-            </Tooltip>
+            {permsUser?.some((elem) => elem === "Editar") && (
+              <Tooltip label="Editar" hasArrow>
+                <Button
+                  onClick={() => handleEdit(row.original)}
+                  size={{ base: "sm", md: "md" }}
+                  colorScheme="blue"
+                  variant={"ghost"}
+                >
+                  <EditIcon boxSize={5} />
+                </Button>
+              </Tooltip>
+            )}
+            {permsUser?.some((elem) => elem === "Eliminar") && (
+              <Tooltip label="Eliminar" hasArrow>
+                <Button
+                  onClick={() => handleDelete(row.original._id)}
+                  ml={4}
+                  size={{ base: "sm", md: "md" }}
+                  colorScheme="red"
+                  variant={"ghost"}
+                >
+                  <DeleteIcon boxSize={5} />
+                </Button>
+              </Tooltip>
+            )}
           </HStack>
         ),
       },

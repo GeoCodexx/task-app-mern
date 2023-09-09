@@ -27,7 +27,6 @@ const RoutesMain = () => {
       setShowAdmPanel(verifyRole);
     }
   }, [isAuthenticated]);
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -42,10 +41,12 @@ const RoutesMain = () => {
           isAuthenticated === true && showAdmPanel ? (
             <Admin />
           ) : (
-            <Navigate to="/tasks" />
+            <Navigate to="/login" />
           )
         }
       >
+        <Route path="/admin" element={<Dashboard />} />
+        <Route path="/admin" element={<Navigate to={<Dashboard />} />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/tasks" element={<AdminTasks />} />
         <Route path="/admin/users" element={<AdminUsers />} />

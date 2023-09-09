@@ -16,7 +16,7 @@ export const useAuth = () => {
 };
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); //Guarda los datos del usuario logeado
+  const [user, setUser] = useState({}); //Guarda los datos del usuario logeado
   const [isAuthenticated, setIsAuthenticated] = useState(false); //Comprueba si esta o no autenticado el usuario
   const [isRegistered, setIsRegistered] = useState(false);
   const [errors, setErrors] = useState([]); //Bandera para mostrar mensaje de datos invalidos para el login
@@ -67,7 +67,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     logoutRequest();
     setIsAuthenticated(false);
-    setUser([]);
+    setUser({});
     localStorage.removeItem("token");
   };
 
@@ -110,7 +110,7 @@ const AuthProvider = ({ children }) => {
       } catch (error) {
         //Si existe algun error se muestra el error en consola y se reinicia los valores a un estado cero la aplicacion.
         console.log(error);
-        setUser([]);
+        setUser({});
         setIsAuthenticated(false);
         localStorage.removeItem("token");
       }

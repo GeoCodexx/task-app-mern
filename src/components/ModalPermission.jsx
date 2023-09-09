@@ -13,7 +13,7 @@ import {
   ModalOverlay,
   useToast,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   createPermission as createPermissionAPI,
@@ -23,7 +23,6 @@ import {
 const ModalPermission = ({ isOpen, onClose, permissionData, refetch }) => {
   //Para usar los mensajes Toast de confirmacion
   const toast = useToast();
-
   //Definicion del hook useForm de react-hook-form
   const {
     handleSubmit,
@@ -34,7 +33,9 @@ const ModalPermission = ({ isOpen, onClose, permissionData, refetch }) => {
     setFocus,
   } = useForm();
 
+  //Verificar si se trajo data para editar o se va crear.
   useEffect(() => {
+    // Establecer los valores iniciales cuando el componente se monta
     if (Object.keys(permissionData).length !== 0) {
       setValue("name", permissionData.name);
       setValue("reference", permissionData.reference);
@@ -71,14 +72,24 @@ const ModalPermission = ({ isOpen, onClose, permissionData, refetch }) => {
       }
     } catch (error) {
       console.log(error);
-      toast({
-        title: "Error",
-        description:
-          "Ocurrió un problema durante el proceso. Vuelva a intertarlo",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+      if (error.response.data) {
+        toast({
+          title: "Error",
+          description: error.response.data[0],
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description:
+            "Ocurrió un problema durante el proceso. Vuelva a intertarlo",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
     }
   };
 
@@ -131,7 +142,6 @@ const ModalPermission = ({ isOpen, onClose, permissionData, refetch }) => {
   };
   return (
     <>
-
       <Modal
         //initialFocusRef={initialRef}
         isOpen={isOpen}

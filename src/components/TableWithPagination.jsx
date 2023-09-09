@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Button,
   Box,
@@ -27,12 +27,18 @@ import { BiFirstPage, BiLastPage } from "react-icons/bi";
 import { MdKeyboardArrowRight, MdKeyboardArrowLeft } from "react-icons/md";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import FilterTable from "./FilterTable";
+import { AuthContext } from "../contexts/AuthProvider";
 
 const TableWithPagination = ({ columns, data, handleAdd, labelBtn }) => {
-  
   //Propiedades para los colores ligh/dark
   let bgBoxes = useColorModeValue("white", "gray.700");
   let bgRowHighlight = useColorModeValue("gray.50", "gray.800");
+
+  //Contexto gestion de permisos
+  const { user } = useContext(AuthContext);
+  const permsUser = user?.role?.permissions?.map((item) => {
+    if (item.reference === `${labelBtn}s` || item.reference === `${labelBtn}es`) return item.name;
+  });
 
   const {
     getTableProps,
@@ -68,15 +74,25 @@ const TableWithPagination = ({ columns, data, handleAdd, labelBtn }) => {
   return (
     <>
       {/** HEADER*/}
-      <Flex align={"center"} bg={bgBoxes} pt={4} pb={6} px={4} borderRadius={"0 0 15px 15px"}>
+      <Flex
+        align={"center"}
+        bg={bgBoxes}
+        pt={4}
+        pb={6}
+        px={4}
+        borderRadius={"0 0 15px 15px"}
+      >
         {/**BUTTON ADD */}
-        <Button
-          onClick={() => handleAdd()}
-          mr={{ base: 2, md: 4 }}
-          colorScheme="teal"
-        >
-          Crear {labelBtn}
-        </Button>
+        {permsUser?.some((elem) => elem === "Crear") && (
+          <Button
+            onClick={() => handleAdd()}
+            mr={{ base: 2, md: 4 }}
+            colorScheme="teal"
+          >
+            Crear {labelBtn}
+          </Button>
+        )}
+
         {/**INPUT SEARCH */}
         <Box bg={bgBoxes} borderRadius={"20px"} w={"full"}>
           <FilterTable

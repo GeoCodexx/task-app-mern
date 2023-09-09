@@ -16,13 +16,20 @@ import { useQuery } from "@tanstack/react-query";
 
 import TableWithPagination from "../../components/TableWithPagination";
 import { deleteUser, getUsers } from "../../api/users";
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import ModalConfirmation from "../../components/ModalConfirmation";
 import noDataTableImage from "../../assets/img/no-data-other.svg";
 import ModalUser from "../../components/ModalUser";
+import { AuthContext } from "../../contexts/AuthProvider";
 
 const AdminUsers = () => {
+  //Contexto gestion de permisos
+  const { user } = useContext(AuthContext);
+  const permsUser = user?.role?.permissions?.map((item) => {
+    if (item.reference === "usuarios") return item.name;
+  });
+
   //Propiedades para los colores ligh/dark
   let bgBoxes = useColorModeValue("white", "gray.700");
 
@@ -89,27 +96,31 @@ const AdminUsers = () => {
         accessor: "options",
         Cell: ({ row }) => (
           <HStack spacing="0px">
-            <Tooltip label="Editar" hasArrow>
-              <Button
-                onClick={() => handleEdit(row.original)}
-                size={{ base: "sm", md: "md" }}
-                colorScheme="blue"
-                variant={"ghost"}
-              >
-                <EditIcon boxSize={5} />
-              </Button>
-            </Tooltip>
-            <Tooltip label="Eliminar" hasArrow>
-              <Button
-                onClick={() => handleDelete(row.original._id)}
-                ml={4}
-                size={{ base: "sm", md: "md" }}
-                colorScheme="red"
-                variant={"ghost"}
-              >
-                <DeleteIcon boxSize={5} />
-              </Button>
-            </Tooltip>
+            {permsUser?.some((elem) => elem === "Editar") && (
+              <Tooltip label="Editar" hasArrow>
+                <Button
+                  onClick={() => handleEdit(row.original)}
+                  size={{ base: "sm", md: "md" }}
+                  colorScheme="blue"
+                  variant={"ghost"}
+                >
+                  <EditIcon boxSize={5} />
+                </Button>
+              </Tooltip>
+            )}
+            {permsUser?.some((elem) => elem === "Eliminar") && (
+              <Tooltip label="Eliminar" hasArrow>
+                <Button
+                  onClick={() => handleDelete(row.original._id)}
+                  ml={4}
+                  size={{ base: "sm", md: "md" }}
+                  colorScheme="red"
+                  variant={"ghost"}
+                >
+                  <DeleteIcon boxSize={5} />
+                </Button>
+              </Tooltip>
+            )}
           </HStack>
         ),
       },
@@ -123,18 +134,33 @@ const AdminUsers = () => {
   };
 
   const handleEdit = (rowData) => {
-    // Lógica para editar el elemento
-    //console.log("Edit", rowData);
-    //console.log(rowData)
-    setUserToEdit(rowData);
-    onOpen();
+    if (rowData._id === "64f37b4b488e5f3c51681675") {
+      toast({
+        title: "Acción denegada",
+        description: "No puede alterar los datos del Administrador",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+      });
+    } else {
+      setUserToEdit(rowData);
+      onOpen();
+    }
   };
 
   const handleDelete = async (id) => {
-    // Lógica para eliminar el elemento
-    //console.log("Delete", id);
-    setIdUserDelete(id);
-    modalConfirm.onOpen();
+    if (id === "64f37b4b488e5f3c51681675") {
+      toast({
+        title: "Acción denegada",
+        description: "No puede alterar los datos del Administrador",
+        status: "error",
+        duration: 2500,
+        isClosable: true,
+      });
+    } else {
+      setIdUserDelete(id);
+      modalConfirm.onOpen();
+    }
   };
 
   //Delete Task

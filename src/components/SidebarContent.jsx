@@ -11,6 +11,8 @@ import {
 } from "@chakra-ui/react";
 import { BsPencilSquare } from "react-icons/bs";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthProvider";
+import { useContext } from "react";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiGrid, path: "/admin/dashboard" },
@@ -21,6 +23,7 @@ const LinkItems = [
 ];
 
 const SidebarContent = ({ onClose, ...rest }) => {
+  const { user } = useContext(AuthContext);
   return (
     <Box
       transition="3s ease"
@@ -44,11 +47,17 @@ const SidebarContent = ({ onClose, ...rest }) => {
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       <nav id="sidebar">
-        {LinkItems.map((link) => (
-          <NavItem key={link.name} icon={link.icon} path={link.path}>
-            {link.name}
-          </NavItem>
-        ))}
+        {LinkItems.map((link) => {
+          let permsUser = user?.role?.permissions?.some(
+            (item) => item.reference === link.name.toLowerCase()
+          );
+          if (permsUser)
+            return (
+              <NavItem key={link.name} icon={link.icon} path={link.path}>
+                {link.name}
+              </NavItem>
+            );
+        })}
       </nav>
     </Box>
   );

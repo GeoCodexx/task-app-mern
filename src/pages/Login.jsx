@@ -67,7 +67,7 @@ const Login = () => {
         //funcion para autenticar al usuario
         signin(values);
         resolve();
-      }, 2000);
+      }, 1300);
     });
   };
 
