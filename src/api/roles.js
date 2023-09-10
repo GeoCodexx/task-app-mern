@@ -1,6 +1,6 @@
 import axios from "axios";
 const instance = axios.create({
-  baseURL: "https://task-backend-mern.vercel.app:3000/api/roles",
+  baseURL: "https://task-backend-mern.vercel.app/api/roles",
   withCredentials: true,
 });
 
