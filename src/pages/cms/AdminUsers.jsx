@@ -60,7 +60,7 @@ const AdminUsers = () => {
       },
       {
         Header: "Nombre",
-        accessor: "name",
+        accessor: "names",
         Cell: ({ row }) =>
           `${row.original.names} ${row.original.patlastname} ${row.original.matlastname}`,
       },

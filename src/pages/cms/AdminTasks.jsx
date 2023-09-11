@@ -74,9 +74,9 @@ const AdminTasks = () => {
       },
       {
         Header: "Autor",
-        accessor: "autor",
+        accessor: "names",
         Cell: ({ row }) =>
-          `${row.original.user.names} ${row.original.user.matlastname}`,
+          `${row.original.user.names} ${row.original.user.patlastname}`,
       },
       {
         Header: "F. Creación",
