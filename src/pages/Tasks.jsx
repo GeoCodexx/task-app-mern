@@ -354,13 +354,12 @@ const Tasks = () => {
               rowStart={{ base: "1", md: "auto" }}
             >
               <Box display={{ base: "block", md: "none" }}>
-                <Button
-                  mx="auto"
-                  onClick={btnCreateTask.onToggle}
-                  colorScheme="teal"
-                >
-                  Crear tarea
-                </Button>
+                <Flex justify={"center"} align={"center"} mb={2}>
+                  <Button onClick={btnCreateTask.onToggle} colorScheme="teal">
+                    Crear tarea
+                  </Button>
+                </Flex>
+
                 <Collapse in={btnCreateTask.isOpen} animateOpacity>
                   <Box
                     w={{ base: "full", sm: "400px" }}
@@ -456,97 +455,97 @@ const Tasks = () => {
                 </Collapse>
               </Box>
               <Box display={{ base: "none", md: "block" }}>
-                  <Box
-                    w={{ base: "full", sm: "400px" }}
-                    m={{ base: "0px", sm: "auto" }}
-                    p={6}
-                    bg={boxForm}
-                    borderRadius={"lg"}
-                    boxShadow={"lg"}
-                  >
-                    {/**FORM COMPONENT */}
-                    <Heading size="md" textAlign="center" mb={8}>
-                      Registrar Tarea
-                    </Heading>
-                    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                      <FormControl isInvalid={errors.title}>
-                        <FormLabel htmlFor="title">Título</FormLabel>
-                        <Input
-                          id="title"
-                          placeholder="ej. Aprender React..."
-                          focusBorderColor="teal.400"
-                          {...register("title", {
-                            required: "*Rellene este campo",
-                            minLength: {
-                              value: 4,
-                              message: "*Mínimo 4 caracteres",
-                            },
-                          })}
-                        />
-                        <FormErrorMessage>
-                          {errors.title && errors.title.message}
-                        </FormErrorMessage>
-                      </FormControl>
-                      <FormControl isInvalid={errors.description} my={4}>
-                        <FormLabel htmlFor="description">Descripción</FormLabel>
-                        <Textarea
-                          id="description"
-                          placeholder="Escribe aquí..."
-                          focusBorderColor="teal.400"
-                          {...register("description", {
-                            required: "*Rellene este campo",
-                            minLength: {
-                              value: 8,
-                              message: "*Mínimo 10 caracteres",
-                            },
-                          })}
-                        />
-                        <FormErrorMessage>
-                          {errors.description && errors.description.message}
-                        </FormErrorMessage>
-                      </FormControl>
-                      <FormControl isInvalid={errors.date} my={4}>
-                        <Input
-                          placeholder="Seleccione una fecha y hora"
-                          focusBorderColor="teal.400"
-                          size="md"
-                          type="datetime-local"
-                          {...register("date", {
-                            required: "*Ingrese una fecha y hora",
-                          })}
-                        />
-                        <FormErrorMessage>
-                          {errors.date && errors.date.message}
-                        </FormErrorMessage>
-                      </FormControl>
-                      <Flex
-                        flexDirection={{ base: "column", md: "row" }}
-                        justify={"center"}
-                        align="center"
-                        mt={8}
+                <Box
+                  w={{ base: "full", sm: "400px" }}
+                  m={{ base: "0px", sm: "auto" }}
+                  p={6}
+                  bg={boxForm}
+                  borderRadius={"lg"}
+                  boxShadow={"lg"}
+                >
+                  {/**FORM COMPONENT */}
+                  <Heading size="md" textAlign="center" mb={8}>
+                    Registrar Tarea
+                  </Heading>
+                  <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                    <FormControl isInvalid={errors.title}>
+                      <FormLabel htmlFor="title">Título</FormLabel>
+                      <Input
+                        id="title"
+                        placeholder="ej. Aprender React..."
+                        focusBorderColor="teal.400"
+                        {...register("title", {
+                          required: "*Rellene este campo",
+                          minLength: {
+                            value: 4,
+                            message: "*Mínimo 4 caracteres",
+                          },
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.title && errors.title.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <FormControl isInvalid={errors.description} my={4}>
+                      <FormLabel htmlFor="description">Descripción</FormLabel>
+                      <Textarea
+                        id="description"
+                        placeholder="Escribe aquí..."
+                        focusBorderColor="teal.400"
+                        {...register("description", {
+                          required: "*Rellene este campo",
+                          minLength: {
+                            value: 8,
+                            message: "*Mínimo 10 caracteres",
+                          },
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.description && errors.description.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <FormControl isInvalid={errors.date} my={4}>
+                      <Input
+                        placeholder="Seleccione una fecha y hora"
+                        focusBorderColor="teal.400"
+                        size="md"
+                        type="datetime-local"
+                        {...register("date", {
+                          required: "*Ingrese una fecha y hora",
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.date && errors.date.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <Flex
+                      flexDirection={{ base: "column", md: "row" }}
+                      justify={"center"}
+                      align="center"
+                      mt={8}
+                    >
+                      <Button
+                        colorScheme="teal"
+                        isLoading={isSubmitting}
+                        type="submit"
+                        w={{ base: "full", md: "auto" }}
                       >
-                        <Button
-                          colorScheme="teal"
-                          isLoading={isSubmitting}
-                          type="submit"
-                          w={{ base: "full", md: "auto" }}
-                        >
-                          {Object.keys(taskData).length !== 0
-                            ? "Actualizar"
-                            : "Guardar"}
-                        </Button>
-                        {}
-                        <Button
-                          onClick={cleanForm}
-                          w={{ base: "full", md: "auto" }}
-                          ml={{ base: "0px", md: "14px" }}
-                          mt={{ base: 2, md: "0px" }}
-                        >
-                          Cancelar
-                        </Button>
-                      </Flex>
-                    </form>
-                  </Box>
+                        {Object.keys(taskData).length !== 0
+                          ? "Actualizar"
+                          : "Guardar"}
+                      </Button>
+                      {}
+                      <Button
+                        onClick={cleanForm}
+                        w={{ base: "full", md: "auto" }}
+                        ml={{ base: "0px", md: "14px" }}
+                        mt={{ base: 2, md: "0px" }}
+                      >
+                        Cancelar
+                      </Button>
+                    </Flex>
+                  </form>
+                </Box>
               </Box>
             </GridItem>
           </Grid>
