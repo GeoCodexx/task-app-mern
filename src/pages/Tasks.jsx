@@ -24,6 +24,7 @@ import {
   useDisclosure,
   Tooltip,
   Image,
+  Collapse,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { createTask, deleteTask, getTasks, updateTask } from "../api/tasks";
@@ -39,6 +40,7 @@ const Tasks = () => {
 
   //Propiedas Modal confirmacion eliminar tarea (hook de Chakra UI)
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnCreateTask = useDisclosure();
 
   //Para usar los mensajes Toast de confirmacion
   const toast = useToast();
@@ -117,7 +119,7 @@ const Tasks = () => {
     Lo hice de esta manera porque el input type="datetime-local" acepta el formato yyyy-mm-ddThh:mm:ss*/
     let fecha = new Date(task.date);
     fecha.setMinutes(fecha.getMinutes() - 300);
-    setValue("date", fecha.toISOString().slice(0,-1))
+    setValue("date", fecha.toISOString().slice(0, -1));
 
     //setValue("date", new Date(task.date).toISOString().slice(0, -5)); //Se agrego el metodo slice para quitar la Z de la fecha en formato ISO porque el INPUT tipo datetime-local no acepta el formato con la Z al final.
 
@@ -169,7 +171,7 @@ const Tasks = () => {
   //Delete Task
   const removeTask = async (id) => {
     try {
-      const res = await deleteTask(id);
+      await deleteTask(id);
       //Cerrar modal
       onClose();
 
@@ -224,7 +226,7 @@ const Tasks = () => {
   const onSubmit = (values) => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        if (Object.keys(taskData).length!==0) {
+        if (Object.keys(taskData).length !== 0) {
           updTask(values);
         } else {
           create(values);
@@ -282,9 +284,26 @@ const Tasks = () => {
               >
                 {listTasks.length === 0 ? (
                   <>
-                    <Flex gridColumn={"1/-1"} flexDirection="column" justify={"center"} align={"center"}>
-                      <Image boxSize='350px' src={noDataImage} alt="Imagen de no resultados" />
-                      <Text fontSize={20} color={"gray.400"} textAlign={"center"} mt={3}>Aún no tiene tareas creadas. Use el formulario para registrar una tarea.</Text>
+                    <Flex
+                      gridColumn={"1/-1"}
+                      flexDirection="column"
+                      justify={"center"}
+                      align={"center"}
+                    >
+                      <Image
+                        boxSize="350px"
+                        src={noDataImage}
+                        alt="Imagen de no resultados"
+                      />
+                      <Text
+                        fontSize={20}
+                        color={"gray.400"}
+                        textAlign={"center"}
+                        mt={3}
+                      >
+                        Aún no tiene tareas creadas. Use el formulario para
+                        registrar una tarea.
+                      </Text>
                     </Flex>
                   </>
                 ) : (
@@ -334,95 +353,105 @@ const Tasks = () => {
               bg={bgBoxes}
               rowStart={{ base: "1", md: "auto" }}
             >
-              <Box
-                w={{ base: "full", sm: "400px" }}
-                m={{ base: "0px", sm: "auto" }}
-                p={6}
-                bg={boxForm}
-                borderRadius={"lg"}
-                boxShadow={"lg"}
+              <Button display={{base:'block', md:'none'}} mx="auto" onClick={btnCreateTask.onToggle}>
+                Crear tarea
+              </Button>
+              <Collapse
+                in={{ base: btnCreateTask.isOpen, md: true }}
+                animateOpacity
               >
-                {/**FORM COMPONENT */}
-                <Heading size="md" textAlign="center" mb={8}>
-                  Registrar Tarea
-                </Heading>
-                <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
-                  <FormControl isInvalid={errors.title}>
-                    <FormLabel htmlFor="title">Título</FormLabel>
-                    <Input
-                      id="title"
-                      placeholder="ej. Aprender React..."
-                      focusBorderColor="teal.400"
-                      {...register("title", {
-                        required: "*Rellene este campo",
-                        minLength: {
-                          value: 4,
-                          message: "*Mínimo 4 caracteres",
-                        },
-                      })}
-                    />
-                    <FormErrorMessage>
-                      {errors.title && errors.title.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                  <FormControl isInvalid={errors.description} my={4}>
-                    <FormLabel htmlFor="description">Descripción</FormLabel>
-                    <Textarea
-                      id="description"
-                      placeholder="Escribe aquí..."
-                      focusBorderColor="teal.400"
-                      {...register("description", {
-                        required: "*Rellene este campo",
-                        minLength: {
-                          value: 8,
-                          message: "*Mínimo 10 caracteres",
-                        },
-                      })}
-                    />
-                    <FormErrorMessage>
-                      {errors.description && errors.description.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                  <FormControl isInvalid={errors.date} my={4}>
-                    <Input
-                      placeholder="Seleccione una fecha y hora"
-                      focusBorderColor="teal.400"
-                      size="md"
-                      type="datetime-local"
-                      {...register("date", {
-                        required: "*Ingrese una fecha y hora",
-                      })}
-                    />
-                    <FormErrorMessage>
-                      {errors.date && errors.date.message}
-                    </FormErrorMessage>
-                  </FormControl>
-                  <Flex
-                    flexDirection={{ base: "column", md: "row" }}
-                    justify={"center"}
-                    align="center"
-                    mt={8}
-                  >
-                    <Button
-                      colorScheme="teal"
-                      isLoading={isSubmitting}
-                      type="submit"
-                      w={{ base: "full", md: "auto" }}
+                <Box
+                  w={{ base: "full", sm: "400px" }}
+                  m={{ base: "0px", sm: "auto" }}
+                  p={6}
+                  bg={boxForm}
+                  borderRadius={"lg"}
+                  boxShadow={"lg"}
+                >
+                  {/**FORM COMPONENT */}
+                  <Heading size="md" textAlign="center" mb={8}>
+                    Registrar Tarea
+                  </Heading>
+                  <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+                    <FormControl isInvalid={errors.title}>
+                      <FormLabel htmlFor="title">Título</FormLabel>
+                      <Input
+                        id="title"
+                        placeholder="ej. Aprender React..."
+                        focusBorderColor="teal.400"
+                        {...register("title", {
+                          required: "*Rellene este campo",
+                          minLength: {
+                            value: 4,
+                            message: "*Mínimo 4 caracteres",
+                          },
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.title && errors.title.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <FormControl isInvalid={errors.description} my={4}>
+                      <FormLabel htmlFor="description">Descripción</FormLabel>
+                      <Textarea
+                        id="description"
+                        placeholder="Escribe aquí..."
+                        focusBorderColor="teal.400"
+                        {...register("description", {
+                          required: "*Rellene este campo",
+                          minLength: {
+                            value: 8,
+                            message: "*Mínimo 10 caracteres",
+                          },
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.description && errors.description.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <FormControl isInvalid={errors.date} my={4}>
+                      <Input
+                        placeholder="Seleccione una fecha y hora"
+                        focusBorderColor="teal.400"
+                        size="md"
+                        type="datetime-local"
+                        {...register("date", {
+                          required: "*Ingrese una fecha y hora",
+                        })}
+                      />
+                      <FormErrorMessage>
+                        {errors.date && errors.date.message}
+                      </FormErrorMessage>
+                    </FormControl>
+                    <Flex
+                      flexDirection={{ base: "column", md: "row" }}
+                      justify={"center"}
+                      align="center"
+                      mt={8}
                     >
-                      {Object.keys(taskData).length!==0 ? "Actualizar" : "Guardar"}
-                    </Button>
-                    {}
-                    <Button
-                      onClick={cleanForm}
-                      w={{ base: "full", md: "auto" }}
-                      ml={{ base: "0px", md: "14px" }}
-                      mt={{ base: 2, md: "0px" }}
-                    >
-                      Cancelar
-                    </Button>
-                  </Flex>
-                </form>
-              </Box>
+                      <Button
+                        colorScheme="teal"
+                        isLoading={isSubmitting}
+                        type="submit"
+                        w={{ base: "full", md: "auto" }}
+                      >
+                        {Object.keys(taskData).length !== 0
+                          ? "Actualizar"
+                          : "Guardar"}
+                      </Button>
+                      {}
+                      <Button
+                        onClick={cleanForm}
+                        w={{ base: "full", md: "auto" }}
+                        ml={{ base: "0px", md: "14px" }}
+                        mt={{ base: 2, md: "0px" }}
+                      >
+                        Cancelar
+                      </Button>
+                    </Flex>
+                  </form>
+                </Box>
+              </Collapse>
             </GridItem>
           </Grid>
         </Container>
