@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Box, Heading, Text, Button } from "@chakra-ui/react";
+import { Box, Heading, Text, Button, Hide } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import heroImage from "../assets/img/post-it-nobg.png";
 import { Link } from "react-router-dom";
@@ -21,27 +21,30 @@ const HeroTask = () => {
   return (
     <Box
       bgGradient="linear(to-r, teal.400, teal.500)"
-      py={20}
+      py={{ base: 10, md: 20 }}
       px={{ base: 4, md: 12 }}
       textAlign={{ base: "center", md: "left" }}
       display="flex"
       flexDirection={{ base: "column", md: "row" }}
       alignItems="center"
       justifyContent={{ base: "space-around", md: "space-between" }}
-      h={{ base: "calc(100vh - 150px)", md: "calc(100vh - 128px)" }}
+      //h={{ base: "calc(100vh - 150px)", md: "calc(100vh - 128px)" }}
+      minH="100vh"
     >
-      <motion.div
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0, y: yOffset }}
-        transition={{ duration: 1, delay: 0.5 }}
-        style={{ display: "inline-block" }}
-      >
-        <img
-          src={heroImage}
-          alt="Task App Image"
-          style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
-        />
-      </motion.div>
+      <Box display={{ base: 'none', md: 'block' }}>
+        <motion.div
+          initial={{ opacity: 0, x: -100 }}
+          animate={{ opacity: 1, x: 0, y: yOffset }}
+          transition={{ duration: 1, delay: 0.5 }}
+          style={{ display: "inline-block" }}
+        >
+          <img
+            src={heroImage}
+            alt="Task App Image"
+            style={{ maxWidth: "100%", height: "auto", borderRadius: "8px" }}
+          />
+        </motion.div>
+      </Box>
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
