@@ -99,11 +99,11 @@ const AuthProvider = ({ children }) => {
         //Se llama a funcion para verificar la validez del token
         const res = await verifyState(token);
 
-        //if (!res.data) return setIsAuthenticated(false);
-        if (!res.data.status) {
+        if (!res.data) return setIsAuthenticated(false);
+        /*if (res.data.status===false) {
           logout();
           return;
-        }
+        }*/
         setIsAuthenticated(true);
 
         //Se restaura los datos del usuario y se asignaa al estado global (user).

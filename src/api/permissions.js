@@ -1,6 +1,8 @@
 import axios from "axios";
+const API = "https://task-backend-mern.vercel.app/api/permissions";
+//const API = "http://127.0.0.1:3000/api/permissions";
 const instance = axios.create({
-  baseURL: "https://task-backend-mern.vercel.app/api/permissions",
+  baseURL: API,
   withCredentials: true,
 });
 
